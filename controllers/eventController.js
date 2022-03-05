@@ -64,4 +64,21 @@ module.exports = {
       return res.status(400).json({ message: "Something went wrong" });
     }
   },
+    // [DELETE]
+  async deleteEvent(req, res) {
+    try {
+      const eventId = req.params.id;
+      Event.findOneAndRemove({ _id: eventId })
+        .then((value) => {
+          if (!value) {
+            return res.status(400).json({ message: "eventId not found" });
+          }
+          return res.status(200).json(value);
+        })
+        .catch((err) => res.status(400).json(err));
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  
 };
