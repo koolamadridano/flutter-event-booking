@@ -66,7 +66,7 @@ const BooksSchema = new Schema({
         type: String,
         required: [true, "from is required"],
       },
-      from: {
+      to: {
         type: String,
         required: [true, "to is required"],
       },
