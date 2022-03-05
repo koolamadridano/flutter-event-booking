@@ -27,4 +27,11 @@ router.put("/event/:id", (req, res) => {
   eventController.updateEventAvailability(req, res);
 });
 
+// [DELETE] api/event/<621d99d6b7e8dd5c70f6a9b8>
+// @Description: Delete 
+router.delete("/event/:id", (req, res) => {
+  eventController.deleteEvent(req, res);
+});
+
+
 module.exports = router;
