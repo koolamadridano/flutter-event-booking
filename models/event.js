@@ -54,7 +54,7 @@ const EventSchema = new Schema({
         type: String,
         required: [true, "start price is required"],
       },
-      from: {
+      to: {
         type: String,
         required: [true, "end price is required"],
       },
