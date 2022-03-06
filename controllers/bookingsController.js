@@ -16,9 +16,9 @@ module.exports = {
   async getBookings(req, res) {
     try {
       const accountId = req.params.id;
-      const status = req.body.type;
+      const status = req.body.status;
     
-      return Bookings.find({'header.customer.id': accountId})
+      return Bookings.find({'header.customer.id': accountId, status})
           .sort({ _id: -1 }) // filter by _id
           .select({ __v: 0 }) // Do not return  __v
           .then((value) => res.status(200).json(value))
