@@ -11,7 +11,7 @@ router.post("/me/bookings", (req, res) => {
 
 // [GET] api/me/bookings/<621d99d6b7e8dd5c70f6a9b8>/pending
 // @Description: Get books
-router.get("/me/bookings/:id?", (req, res) => {
+router.get("/me/bookings/:id", (req, res) => {
   bookingsController.getBookings(req, res);
 });
 
