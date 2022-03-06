@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const enumStatus = [
+  "declined",
   "cancelled",
   "pending",
   "ready",
