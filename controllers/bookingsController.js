@@ -17,21 +17,21 @@ module.exports = {
     try {
       const accountId = req.params.id;
       const status = req.body.type;
-      if(status != null || status != "") {
-        return Bookings.find()
-          .find({"header.customer.id": accountId, status: status})
+    
+      return Bookings.find()
+          .find({"header.customer.id": accountId, status})
           .sort({ _id: -1 }) // filter by _id
           .select({ __v: 0 }) // Do not return  __v
           .then((value) => res.status(200).json(value))
           .catch((err) => res.status(400).json(err));
-      }
-      return Bookings.find()
-        .where("header.customer.id")
-        .equals(accountId)
-        .sort({ _id: -1 }) // filter by _id
-        .select({ __v: 0 }) // Do not return  __v
-        .then((value) => res.status(200).json(value))
-        .catch((err) => res.status(400).json(err));
+      
+//       return Bookings.find()
+//         .where("header.customer.id")
+//         .equals(accountId)
+//         .sort({ _id: -1 }) // filter by _id
+//         .select({ __v: 0 }) // Do not return  __v
+//         .then((value) => res.status(200).json(value))
+//         .catch((err) => res.status(400).json(err));
     } catch (error) {
       console.error(error);
     }
