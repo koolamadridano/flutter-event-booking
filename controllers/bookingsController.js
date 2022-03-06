@@ -16,7 +16,7 @@ module.exports = {
   async getBookings(req, res) {
     try {
       const accountId = req.params.id;
-      return Books.find()
+      return Bookings.find()
         .where("header.customer.id")
         .equals(accountId)
         .sort({ _id: -1 }) // filter by _id
