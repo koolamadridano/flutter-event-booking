@@ -86,7 +86,7 @@ Bookings = mongoose.model(
         default: Date.now,
       },
       event: {
-        type: Date,
+        type: String,
         required: [true, "event date is required"],
       },
     },
