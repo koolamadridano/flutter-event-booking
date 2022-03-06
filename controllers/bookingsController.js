@@ -18,7 +18,7 @@ module.exports = {
       const accountId = req.params.id;
       const status = req.body.type;
     
-      return Bookings.find()
+      return Bookings
           .find({"header.customer.id": accountId, status})
           .sort({ _id: -1 }) // filter by _id
           .select({ __v: 0 }) // Do not return  __v
