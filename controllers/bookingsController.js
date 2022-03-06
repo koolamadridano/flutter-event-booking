@@ -16,7 +16,7 @@ module.exports = {
   async getBookings(req, res) {
     try {
       const accountId = req.params.id;
-      const status = req.params.status;
+      const status = req.query.status;
     
       return Bookings.find({'header.customer.id': accountId, status})
           .sort({ _id: -1 }) // filter by _id
