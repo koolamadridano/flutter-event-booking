@@ -74,6 +74,7 @@ module.exports = {
             'event.location': eventLocation,
             'date.event': eventDate,
             amountToPay,
+            status
           },
         },
         { new: true, runValidators: true }
