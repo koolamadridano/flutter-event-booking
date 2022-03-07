@@ -40,10 +40,10 @@ module.exports = {
   // [PUT]
   async updateBookingStatus(req, res) {
     try {
-      const _id = req.params.id;
-      const { status } = req.body;
+      const _refId = req.params.refId;
+      const status = req.query.status;
       Bookings.findOneAndUpdate(
-        { _id },
+        { ref: _refId },
         {
           $set: {
             status,
