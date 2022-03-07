@@ -31,6 +31,10 @@ const BooksSchema = new Schema({
         type: String,
         required: [true, "id is required"],
       },
+      avatarUrl: {
+        type: String,
+        required: [true, "avatarUrl is required"],
+      },
       firstName: {
         type: String,
         required: [true, "firstName is required"],
