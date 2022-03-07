@@ -41,7 +41,7 @@ module.exports = {
   async updateBookingStatus(req, res) {
     try {
       const _refId = req.params.refId;
-      const status = req.query.status;
+      const { status } = req.body;
       Bookings.findOneAndUpdate(
         { ref: _refId },
         {
