@@ -62,4 +62,31 @@ module.exports = {
       return res.status(400).json({ message: "Something went wrong" });
     }
   },
+    // [PUT]
+  async updateBookingAsReady(req, res) {
+    try {
+      const _refId = req.params.refId;
+      const { amountToPay, eventDate,eventLocation } = req.body;
+      Bookings.findOneAndUpdate(
+        { _id },
+        {
+          $set: {
+            'event.location: eventLocation,
+            'date.event': eventDate,
+            amountToPay,
+          },
+        },
+        { new: true, runValidators: true }
+      )
+        .then((value) => {
+          if (!value) {
+            return res.status(400).json({ message: "bookId not found" });
+          }
+          return res.status(200).json(value);
+        })
+        .catch((err) => res.status(400).json(err));
+    } catch (e) {
+      return res.status(400).json({ message: "Something went wrong" });
+    }
+  },
 };
