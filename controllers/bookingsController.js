@@ -71,7 +71,7 @@ module.exports = {
         { ref: _refId },
         {
           $set: {
-            'event.location: eventLocation,
+            'event.location': eventLocation,
             'date.event': eventDate,
             amountToPay,
           },
