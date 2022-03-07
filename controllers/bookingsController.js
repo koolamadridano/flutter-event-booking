@@ -66,7 +66,7 @@ module.exports = {
   async updateBookingAsReady(req, res) {
     try {
       const _refId = req.params.refId;
-      const { amountToPay, eventDate,eventLocation } = req.body;
+      const { amountToPay, eventDate,eventLocation, status } = req.body;
       Bookings.findOneAndUpdate(
         { ref: _refId },
         {
