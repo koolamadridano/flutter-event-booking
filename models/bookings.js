@@ -21,6 +21,10 @@ const enumCategory = [
 Bookings = mongoose.model(
   "bookings",
   new Schema({
+       ref: {
+        type: String,
+        required: [true, "ref is required"],
+      },
     header: {
       eventPlanner: {
         id: {
@@ -48,10 +52,6 @@ Bookings = mongoose.model(
       },
     },
     event: {
-      id: {
-        type: String,
-        required: [true, "id is required"],
-      },
       title: {
         type: String,
         required: [true, "title is required"],
