@@ -19,10 +19,10 @@ const enumCategory = [
 ];
 
 const BooksSchema = new Schema({
-         ref: {
-        type: String,
-        required: [true, "ref is required"],
-      },
+ ref: {
+    type: String,
+    required: [true, "ref is required"],
+  },
   header: {
     eventPlanner: {
       id: {
@@ -58,10 +58,6 @@ const BooksSchema = new Schema({
     },
   },
   event: {
-        id: {
-      type: String,
-      required: [true, "id is required"],
-    },
     title: {
       type: String,
       required: [true, "title is required"],
