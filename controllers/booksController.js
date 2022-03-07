@@ -34,6 +34,8 @@ module.exports = {
     try {
       const _refId = req.params.refId;
       const { status } = req.body;
+      
+      console.log(_refId);
       Books.findOneAndUpdate(
         { ref: _refId  },
         {
