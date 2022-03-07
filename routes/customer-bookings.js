@@ -15,6 +15,13 @@ router.get("/me/bookings/:id", (req, res) => {
   bookingsController.getBookings(req, res);
 });
 
+// [GET] api/me/bookings/<621d99d6b7e8dd5c70f6a9b8>/pending
+// @Description: Get books
+router.get("/event-planner/bookings/:id", (req, res) => {
+  bookingsController.getBookingsByEventPlannerId(req, res);
+});
+
+
 // [PUT] api/me/bookings/<621d99d6b7e8dd5c70f6a9b8>
 // @Description: Get books
 router.put("/me/bookings/:refId", (req, res) => {
