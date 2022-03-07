@@ -68,7 +68,7 @@ module.exports = {
       const _refId = req.params.refId;
       const { amountToPay, eventDate,eventLocation } = req.body;
       Bookings.findOneAndUpdate(
-        { _id },
+        { ref: _refId },
         {
           $set: {
             'event.location: eventLocation,
