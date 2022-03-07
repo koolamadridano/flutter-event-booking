@@ -25,14 +25,24 @@ module.exports = {
           .select({ __v: 0 }) // Do not return  __v
           .then((value) => res.status(200).json(value))
           .catch((err) => res.status(400).json(err));
+     
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  async getBookingsByEventPlannerId(req, res) {
+    try {
+      const accountId = req.params.id;
+      const status = req.query.status;
       
-//       return Bookings.find()
-//         .where("header.customer.id")
-//         .equals(accountId)
-//         .sort({ _id: -1 }) // filter by _id
-//         .select({ __v: 0 }) // Do not return  __v
-//         .then((value) => res.status(200).json(value))
-//         .catch((err) => res.status(400).json(err));
+      console.log({accountId, status});
+      
+      return Bookings.find({'header.eventPlanner.id': accountId, status})
+          .sort({ _id: -1 }) // filter by _id
+          .select({ __v: 0 }) // Do not return  __v
+          .then((value) => res.status(200).json(value))
+          .catch((err) => res.status(400).json(err));
+     
     } catch (error) {
       console.error(error);
     }
