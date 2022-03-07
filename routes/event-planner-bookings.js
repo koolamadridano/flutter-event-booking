@@ -17,7 +17,7 @@ router.get("/book/:id", (req, res) => {
 
 // [PUT] api/book/<621d99d6b7e8dd5c70f6a9b8>
 // @Description: Get books
-router.put("/book/:id", (req, res) => {
+router.put("/book/:refId", (req, res) => {
   bookController.updateBookingStatus(req, res);
 });
 
