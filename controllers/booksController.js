@@ -17,13 +17,16 @@ module.exports = {
   async getBookings(req, res) {
     try {
       const accountId = req.params.id;
-      return Books.find()
-        .where("header.eventPlanner.id")
-        .equals(accountId)
-        .sort({ _id: -1 }) // filter by date
-        .select({ __v: 0 }) // Do not return _id and __v
-        .then((value) => res.status(200).json(value))
-        .catch((err) => res.status(400).json(err));
+      const status = req.query.status;
+      
+      console.log({accountId, status});
+      
+      return Books.find({'header.eventPlanner.id': accountId, status})
+          .sort({ _id: -1 }) // filter by _id
+          .select({ __v: 0 }) // Do not return  __v
+          .then((value) => res.status(200).json(value))
+          .catch((err) => res.status(400).json(err));
+      
     } catch (error) {
       console.error(error);
     }
