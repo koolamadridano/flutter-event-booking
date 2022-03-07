@@ -54,6 +54,10 @@ const BooksSchema = new Schema({
     },
   },
   event: {
+        id: {
+      type: String,
+      required: [true, "id is required"],
+    },
     title: {
       type: String,
       required: [true, "title is required"],
