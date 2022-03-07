@@ -7,6 +7,7 @@ const enumStatus = [
   "ready",
   "in-progress",
   "completed",
+  "declined"
 ];
 
 const enumCategory = [
