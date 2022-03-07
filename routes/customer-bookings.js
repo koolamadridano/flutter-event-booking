@@ -21,4 +21,11 @@ router.put("/me/bookings/:id", (req, res) => {
   bookingsController.updateBookingStatus(req, res);
 });
 
+// [PUT] api/me/bookings/<f09342e0-14f6-451b-bec1-1e8dbe9989be>
+// @Description: Get books
+router.put("/update-booking-as-ready/:refId", (req, res) => {
+  bookingsController.updateBookingAsReady(req, res);
+});
+
+
 module.exports = router;
