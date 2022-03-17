@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const rolesEnum = ["customer", "event-planner", "organizer", "admin"];
+      
 const ProfileSchema = new Schema({
   accountId: {
     type: String,
@@ -8,7 +10,7 @@ const ProfileSchema = new Schema({
   },
   userType: {
     type: String,
-    enum: ["customer", "event-planner"],
+    enum: rolesEnum,
     required: [true, "userType is required"],
   },
   firstName: {
