@@ -51,6 +51,10 @@ const ProfileSchema = new Schema({
       //required: [true, "contactNo is required"],
     },
   },
+  isVerified: {
+     type: Bool,
+     required: [true, "isVerified is required"],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
