@@ -49,7 +49,7 @@ const ProfileSchema = new Schema({
       //required: [true, "contactNo is required"],
     },
   },
-  dateJoined: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
