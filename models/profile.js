@@ -52,7 +52,7 @@ const ProfileSchema = new Schema({
     },
   },
   isVerified: {
-     type: Bool,
+     type: Boolean,
      required: [true, "isVerified is required"],
   },
   createdAt: {
