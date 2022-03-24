@@ -30,6 +30,7 @@ const VerificationSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    status: {}
     updatedAt: {
         type: Date,
     }
