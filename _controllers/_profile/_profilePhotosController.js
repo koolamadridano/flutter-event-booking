@@ -1,5 +1,5 @@
 require("dotenv").config();
-const ProfilePhotos = require("../../_models/profile/profilePhotos");
+const ProfilePhotos = require("../../_models/_profile/_profilePhotos");
 const cloudinary = require("../../services/img-upload/cloundinary");
 
 module.exports = {

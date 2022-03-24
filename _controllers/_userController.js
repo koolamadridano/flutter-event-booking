@@ -2,7 +2,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const User = require("../_models/user");
+const User = require("../_models/_user");
 const { sendEmail } = require("../services/nodemailer/mail");
 
 module.exports = {

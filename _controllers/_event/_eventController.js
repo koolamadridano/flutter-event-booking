@@ -1,4 +1,4 @@
-const Event = require("../../_models/event/event");
+const Event = require("../../_models/_event/_event");
 
 module.exports = {
   // [POST]

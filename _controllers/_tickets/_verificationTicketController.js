@@ -1,7 +1,7 @@
 require("dotenv").config();
 const cloudinary = require("../../services/img-upload/cloundinary");
-const Verification = require("../../_models/tickets/verification");
-const Profile = require("../../_models/profile/profile");
+const Verification = require("../../_models/_tickets/_verification");
+const Profile = require("../../_models/_profile/_profile");
 
 
 // POST

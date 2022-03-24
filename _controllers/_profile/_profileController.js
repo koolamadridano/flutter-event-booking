@@ -1,4 +1,4 @@
-const Profile = require("../../_models/profile/profile");
+const Profile = require("../../_models/_profile/_profile");
 
 module.exports = {
   // [POST]
