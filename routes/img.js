@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const protected = require("../middleware/authentication");
-const imgUploadController = require("../controllers/imgUploadController");
+const imgUploadController = require("../controllers/ImgUploadController");
 
 // [POST] api/img
 // @Description: Create/Upload Img file
