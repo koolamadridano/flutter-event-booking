@@ -3,13 +3,13 @@ const express = require("express");
 const multer = require("multer");
 const mongoose = require("mongoose");
 
-const user = require("./routes/user");
-const img =  require("./routes/img");
-const profile = require("./routes/profile");
-const event = require("./routes/event");
-const bookingEventPlanner = require("./routes/event-planner-bookings");
-const bookingCustomer =  require("./routes/customer-bookings");
-const tickets = require("./routes/verification");
+const user = require("./_routes/_user");
+const img =  require("./_routes/_img");
+const profile = require("./_routes/_profile");
+const event = require("./_routes/_event");
+const bookingEventPlanner = require("./_routes/_event-planner-bookings");
+const bookingCustomer =  require("./_routes/_customer-bookings");
+const tickets = require("./_routes/_verification");
 
 const { fileFilter } = require("./services/img-upload/fileFilter");
 const storage = multer.diskStorage({});
