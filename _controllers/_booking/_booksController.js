@@ -1,4 +1,4 @@
-const Books = require("../../models/booking/books");
+const Books = require("../../_models/booking/books");
 
 module.exports = {
   // [POST]
