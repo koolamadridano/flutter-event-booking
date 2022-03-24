@@ -4,7 +4,7 @@ module.exports = {
   async uploadImg(req, res) {
     try {
       const options = {
-        folder: "projects/event-booking",
+        folder: process.env.CLOUDINARY_FOLDER + "/places",
         unique_filename: true,
       };
       const filePath = req.file.path;

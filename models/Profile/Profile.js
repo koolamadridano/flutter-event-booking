@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const enumUserTypes = ["customer", "event-planner", "organizer"];
+
 const ProfileSchema = new Schema({
   accountId: {
     type: String,
@@ -8,7 +10,7 @@ const ProfileSchema = new Schema({
   },
   userType: {
     type: String,
-    enum: ["customer", "event-planner"],
+    enum: enumUserTypes,
     required: [true, "userType is required"],
   },
   firstName: {
@@ -49,10 +51,17 @@ const ProfileSchema = new Schema({
       //required: [true, "contactNo is required"],
     },
   },
-  dateJoined: {
+  isVerified: {
+    type: Boolean,
+    required: [true, "verification status is required"],
+  },
+  createdAt: {
     type: Date,
     default: Date.now,
   },
+  updatedAt: {
+    type: Date,
+  }
 });
 
 module.exports = Profile = mongoose.model("profiles", ProfileSchema);

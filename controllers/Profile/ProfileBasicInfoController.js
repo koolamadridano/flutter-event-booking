@@ -1,4 +1,4 @@
-const Profile = require("../models/profile");
+const Profile = require("../../models/Profile/Profile");
 
 module.exports = {
   async updateProfileAddress(req, res) {
@@ -13,6 +13,7 @@ module.exports = {
             "address.name": name,
             "address.coordinates.latitude": lat,
             "address.coordinates.longitude": long,
+            updatedAt: Date.now(),
           },
         }
       )
@@ -38,6 +39,7 @@ module.exports = {
           $set: {
             "contact.email": email,
             "contact.number": number,
+            updatedAt: Date.now(),
           },
         }
       )

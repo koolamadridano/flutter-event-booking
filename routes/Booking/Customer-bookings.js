@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const bookingsController = require("../controllers/bookingsController");
+const bookingsController = require("../../controllers/Booking/bookingsController");
 
 // [POST] api/me/bookings
 // @Description: Create event
