@@ -1,4 +1,4 @@
-const ProfileUrl = require("../../models/Profile/ProfileUrl");
+const ProfileUrl = require("../../models/profile/profileUrl");
 
 module.exports = {
     // [POST]

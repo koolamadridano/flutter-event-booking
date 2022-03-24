@@ -1,4 +1,4 @@
-const Profile = require("../../models/Profile/Profile");
+const Profile = require("../../models/profile/profile");
 
 module.exports = {
   async updateProfileAddress(req, res) {
