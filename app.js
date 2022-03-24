@@ -3,6 +3,14 @@ const express = require("express");
 const multer = require("multer");
 const mongoose = require("mongoose");
 
+const user = require("./routes/user");
+const img =  require("./routes/img");
+const profile = require("./routes/profile/profile");
+const event = require("./routes/event/event");
+const bookingEventPlanner = require("./routes/booking/event-planner-bookings");
+const bookingCustomer =  require("./routes/booking/customer-bookings");
+const tickets = require("./routes/tickets/verification");
+
 const { fileFilter } = require("./services/img-upload/fileFilter");
 const storage = multer.diskStorage({});
 
@@ -19,13 +27,13 @@ try {
   app.use(express.urlencoded({ extended: true }));
   app.use(multer({ storage, fileFilter }).single("img"));
 
-  app.use("/api", require("./routes/User"));
-  app.use("/api", require("./routes/Img"));
-  app.use("/api", require("./routes/Profile/Profile"));
-  app.use("/api", require("./routes/Event/event"));
-  app.use("/api", require("./routes/Booking/event-planner-bookings"));
-  app.use("/api", require("./routes/Booking/customer-bookings"));
-  app.use("/api", require("./routes/Tickets/Verification"));
+  app.use("/api", user);
+  app.use("/api", img);
+  app.use("/api", profile);
+  app.use("/api", event);
+  app.use("/api", bookingEventPlanner);
+  app.use("/api", bookingCustomer);
+  app.use("/api", tickets);
 
   app.listen(port, () => console.log("SERVER IS RUNNING"));
 } catch (error) {

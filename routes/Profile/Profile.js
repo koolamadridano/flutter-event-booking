@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const profile = require("../../controllers/Profile/ProfileController");
-const basicInfo = require("../../controllers/Profile/ProfileBasicInfoController");
-const photos = require("../../controllers/Profile/ProfilePhotosController");
-const urls = require("../../controllers/Profile/ProfileUrlController");
+const profile = require("../../controllers/profile/profileController");
+const basicInfo = require("../../controllers/profile/profileBasicInfoController");
+const photos = require("../../controllers/profile/profilePhotosController");
+const urls = require("../../controllers/profile/profileUrlController");
 
 const protected = require("../../middleware/authentication");
 

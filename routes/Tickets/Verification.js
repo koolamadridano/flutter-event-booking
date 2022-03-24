@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const verification = require("../../controllers/Tickets/VerificationTicketController");
+const verification = require("../../controllers/tickets/verificationTicketController");
 
 // VERIFICATION
 router.post("/ticket/verification", (req, res) => verification.createVerificationTicket(req, res));
