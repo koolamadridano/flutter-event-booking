@@ -5,11 +5,11 @@ const mongoose = require("mongoose");
 
 const user = require("./routes/user");
 const img =  require("./routes/img");
-const profile = require("./routes/profile/profile");
-const event = require("./routes/event/event");
-const bookingEventPlanner = require("./routes/booking/event-planner-bookings");
-const bookingCustomer =  require("./routes/booking/customer-bookings");
-const tickets = require("./routes/tickets/verification");
+const profile = require("./routes/profile");
+const event = require("./routes/event");
+const bookingEventPlanner = require("./routes/event-planner-bookings");
+const bookingCustomer =  require("./routes/customer-bookings");
+const tickets = require("./routes/verification");
 
 const { fileFilter } = require("./services/img-upload/fileFilter");
 const storage = multer.diskStorage({});
