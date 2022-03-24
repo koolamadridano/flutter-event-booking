@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const enumUserTypes = ["customer", "event-planner", "organizer"];
-
+const rolesEnum = ["customer", "event-planner", "organizer", "admin"];
+      
 const ProfileSchema = new Schema({
   accountId: {
     type: String,
@@ -11,6 +12,7 @@ const ProfileSchema = new Schema({
   userType: {
     type: String,
     enum: enumUserTypes,
+    enum: rolesEnum,
     required: [true, "userType is required"],
   },
   firstName: {
@@ -54,6 +56,8 @@ const ProfileSchema = new Schema({
   isVerified: {
     type: Boolean,
     required: [true, "verification status is required"],
+     type: Boolean,
+     required: [true, "isVerified is required"],
   },
   createdAt: {
     type: Date,
