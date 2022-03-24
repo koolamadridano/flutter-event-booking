@@ -19,8 +19,8 @@ try {
   app.use(express.urlencoded({ extended: true }));
   app.use(multer({ storage, fileFilter }).single("img"));
 
-  app.use("/api", require("./routes/user"));
-  app.use("/api", require("./routes/img"));
+  app.use("/api", require("./routes/User"));
+  app.use("/api", require("./routes/Img"));
   app.use("/api", require("./routes/Profile/Profile"));
   app.use("/api", require("./routes/Event/event"));
   app.use("/api", require("./routes/Booking/event-planner-bookings"));
