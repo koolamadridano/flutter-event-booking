@@ -69,7 +69,7 @@ async function updateProfileVerificationStatus(req, res) {
         // UPDATE PROFILE STATUS
         Profile.findOneAndUpdate(
             { accountId },
-            { isVerified: true })
+            { isVerified })
                 .then((value) => console.log({message: "updated"}))
                 .catch((err) => console.log(err));
        
