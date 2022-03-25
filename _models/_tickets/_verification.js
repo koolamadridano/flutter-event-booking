@@ -30,7 +30,11 @@ const VerificationSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    status: {}
+    status: {
+        type: String,
+        enum: ["pending", "verified", "rejected"],
+        required: [true, "status is required"],
+    },
     updatedAt: {
         type: Date,
     }
