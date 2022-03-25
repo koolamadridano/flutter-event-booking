@@ -47,11 +47,7 @@ async function getSingleVerificationTicket(req, res) {
     try {
         const accountId = req.params.id;
         return Verification.findOne({ accountId })
-            .then((value) => {
-                if (value) 
-                    return res.status(200).json(value);
-                return res.status(400).json({ message: "accountId doesn't exist or has already been deleted"});
-            })
+            .then((value) => res.status(200).json(value))
             .catch((err) => res.status(400).json(err));
     } catch (error) {
         console.error(error);
