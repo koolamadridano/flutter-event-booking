@@ -63,16 +63,19 @@ async function updateProfileVerificationStatus(req, res) {
     try {
         const _id = req.body.verificationObjId;
         const accountId = req.body.accountId;
+        const status = req.body.status;
 
         // UPDATE PROFILE STATUS
         Profile.findOneAndUpdate(
             { accountId },
-            { isVerified: true })
+            { status })
                 .then((value) => console.log({message: "updated"}))
                 .catch((err) => console.log(err));
        
-        // DELETE SUBMITTED TICKET
-        Verification.findByIdAndDelete(_id)
+        // UPDATE SUBMITTED TICKET
+        Verification.findOneAndUpdate(
+            { _id },
+            { status: true })
             .then((value) => {
                 if (value) 
                     return res.status(200).json({ message: "updated"});
