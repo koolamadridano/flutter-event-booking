@@ -81,7 +81,7 @@ class UserController extends GetxController {
         "password": password,
       });
       loginData = loginResponse.data;
-      prettyPrint("loginData", loginData);
+      prettyPrint("loginResponse", loginData);
 
       // SEARCH PROFILE IF DOES EXIST
       await validateProfileIfExist(accountId: loginData["accountId"]);
@@ -108,7 +108,13 @@ class UserController extends GetxController {
         Get.toNamed("/event-planner-main");
         return;
       }
-
+      if (validatResponse.data["userType"] == "organizer") {
+        // ASSIGN PROFILE DATA
+        _profileController.profileData = validatResponse.data;
+        // REDIRECT TO EVENT PLANNER SCREEN
+        Get.toNamed("/organizer-main");
+        return;
+      }
       Get.back();
     } on DioError catch (e) {
       if (e.response!.statusCode == 400) {

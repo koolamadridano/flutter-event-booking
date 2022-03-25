@@ -89,9 +89,9 @@ class _EventPlannerCreateEventState extends State<EventPlannerCreateEvent> {
     };
 
     if (_vars.contains("")) {
-      print("Some fields are empty");
       return;
     }
+
     destroyTextFieldFocus(context);
     dialogCategory(
       context: context,
@@ -190,419 +190,414 @@ class _EventPlannerCreateEventState extends State<EventPlannerCreateEvent> {
                 ),
               ],
             ),
-            body: Container(
-              child: Column(
-                children: [
-                  Container(
-                    width: Get.width,
-                    margin: const EdgeInsets.only(
-                      top: 20.0,
-                      left: 40.0,
-                      bottom: 15.0,
-                    ),
-                    child: Text(
-                      "Venue Photos",
-                      style: GoogleFonts.roboto(
-                        color: secondary.withOpacity(0.5),
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
+            body: Column(
+              children: [
+                Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.only(
+                    top: 20.0,
+                    left: 40.0,
+                    bottom: 15.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: Text(
+                    "Venue Photos",
+                    style: GoogleFonts.roboto(
+                      color: secondary.withOpacity(0.5),
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: _img1Path == ""
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async => await selectImage(index: 1),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(15),
+                                dashPattern: const [10, 10],
+                                color: Colors.black12,
+                                strokeWidth: 1.5,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      height: Get.height * 0.10,
+                                      width: Get.width * 0.25,
+                                    ),
+                                    const Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          AntDesign.plus,
+                                          color: Colors.black12,
+                                          size: 34.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(15),
+                              dashPattern: const [10, 10],
+                              color: Colors.transparent,
+                              strokeWidth: 1.5,
+                              child: Stack(
+                                children: [
+                                  Image.file(
+                                    File(_img1Path),
+                                    height: Get.height * 0.10,
+                                    width: Get.width * 0.25,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: IconButton(
+                                      splashRadius: 20.0,
+                                      onPressed: () =>
+                                          removeSelectedImage(index: 1),
+                                      icon: const Icon(
+                                        AntDesign.closecircle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  _eventController.uploadedIndexes.contains(1)
+                                      ? Positioned(
+                                          top: 5,
+                                          left: 5,
+                                          child: IconButton(
+                                            splashRadius: 20.0,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              AntDesign.checkcircle,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
+                    ),
+                    const SizedBox(width: 5),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: _img2Path == ""
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async => await selectImage(index: 2),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(15),
+                                dashPattern: const [10, 10],
+                                color: Colors.black12,
+                                strokeWidth: 1.5,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      height: Get.height * 0.10,
+                                      width: Get.width * 0.25,
+                                    ),
+                                    const Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          AntDesign.plus,
+                                          color: Colors.black12,
+                                          size: 34.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(15),
+                              dashPattern: const [10, 10],
+                              color: Colors.transparent,
+                              strokeWidth: 1.5,
+                              child: Stack(
+                                children: [
+                                  Image.file(
+                                    File(_img2Path),
+                                    height: Get.height * 0.10,
+                                    width: Get.width * 0.25,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: IconButton(
+                                      splashRadius: 20.0,
+                                      onPressed: () =>
+                                          removeSelectedImage(index: 2),
+                                      icon: const Icon(
+                                        AntDesign.closecircle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  _eventController.uploadedIndexes.contains(2)
+                                      ? Positioned(
+                                          top: 5,
+                                          left: 5,
+                                          child: IconButton(
+                                            splashRadius: 20.0,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              AntDesign.checkcircle,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
+                    ),
+                    const SizedBox(width: 5),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: _img3Path == ""
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async => await selectImage(index: 3),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(15),
+                                dashPattern: const [10, 10],
+                                color: Colors.black12,
+                                strokeWidth: 1.5,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      height: Get.height * 0.10,
+                                      width: Get.width * 0.25,
+                                    ),
+                                    const Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          AntDesign.plus,
+                                          color: Colors.black12,
+                                          size: 34.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(15),
+                              dashPattern: const [10, 10],
+                              color: Colors.transparent,
+                              strokeWidth: 1.5,
+                              child: Stack(
+                                children: [
+                                  Image.file(
+                                    File(_img3Path),
+                                    height: Get.height * 0.10,
+                                    width: Get.width * 0.25,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: IconButton(
+                                      splashRadius: 20.0,
+                                      onPressed: () =>
+                                          removeSelectedImage(index: 3),
+                                      icon: const Icon(
+                                        AntDesign.closecircle,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  _eventController.uploadedIndexes.contains(3)
+                                      ? Positioned(
+                                          top: 5,
+                                          left: 5,
+                                          child: IconButton(
+                                            splashRadius: 20.0,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                              AntDesign.checkcircle,
+                                              color: Colors.green,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox(),
+                                ],
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.only(
+                    top: 30.0,
+                    left: 40.0,
+                    right: 40.0,
+                    bottom: 15.0,
+                  ),
+                  child: Text(
+                    "Details",
+                    style: GoogleFonts.roboto(
+                      color: secondary.withOpacity(0.5),
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 40.0,
+                    right: 40.0,
+                  ),
+                  child: inputTextField(
+                    labelText: "Event title",
+                    textFieldStyle: GoogleFonts.roboto(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                    hintStyleStyle: GoogleFonts.roboto(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    controller: _titleController,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 10.0,
+                    left: 40.0,
+                    right: 40.0,
+                  ),
+                  child: inputTextArea(
+                    labelText: "More Details",
+                    textFieldStyle: GoogleFonts.roboto(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
+                    hintStyleStyle: GoogleFonts.roboto(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w300,
+                    ),
+                    controller: _moreDetailsController,
+                  ),
+                ),
+                Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.only(
+                    top: 30.0,
+                    left: 40.0,
+                    right: 40.0,
+                    bottom: 15.0,
+                  ),
+                  child: Text(
+                    "Price Range",
+                    style: GoogleFonts.roboto(
+                      color: secondary.withOpacity(0.5),
+                      fontSize: 13.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: 40.0,
+                    right: 40.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        child: _img1Path == ""
-                            ? GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () async => await selectImage(index: 1),
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(15),
-                                  dashPattern: const [10, 10],
-                                  color: Colors.black12,
-                                  strokeWidth: 1.5,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: Get.height * 0.10,
-                                        width: Get.width * 0.25,
-                                      ),
-                                      const Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            AntDesign.plus,
-                                            color: Colors.black12,
-                                            size: 34.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(15),
-                                dashPattern: const [10, 10],
-                                color: Colors.transparent,
-                                strokeWidth: 1.5,
-                                child: Stack(
-                                  children: [
-                                    Image.file(
-                                      File(_img1Path),
-                                      height: Get.height * 0.10,
-                                      width: Get.width * 0.25,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: IconButton(
-                                        splashRadius: 20.0,
-                                        onPressed: () =>
-                                            removeSelectedImage(index: 1),
-                                        icon: const Icon(
-                                          AntDesign.closecircle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    _eventController.uploadedIndexes.contains(1)
-                                        ? Positioned(
-                                            top: 5,
-                                            left: 5,
-                                            child: IconButton(
-                                              splashRadius: 20.0,
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                AntDesign.checkcircle,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                              ),
+                      SizedBox(
+                        width: Get.width * 0.38,
+                        child: inputNumberTextField(
+                          labelText: "From",
+                          textFieldStyle: GoogleFonts.roboto(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black54,
+                          ),
+                          hintStyleStyle: GoogleFonts.roboto(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          controller: _priceFromController,
+                        ),
                       ),
                       const SizedBox(width: 5),
-                      ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        child: _img2Path == ""
-                            ? GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () async => await selectImage(index: 2),
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(15),
-                                  dashPattern: const [10, 10],
-                                  color: Colors.black12,
-                                  strokeWidth: 1.5,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: Get.height * 0.10,
-                                        width: Get.width * 0.25,
-                                      ),
-                                      const Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            AntDesign.plus,
-                                            color: Colors.black12,
-                                            size: 34.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(15),
-                                dashPattern: const [10, 10],
-                                color: Colors.transparent,
-                                strokeWidth: 1.5,
-                                child: Stack(
-                                  children: [
-                                    Image.file(
-                                      File(_img2Path),
-                                      height: Get.height * 0.10,
-                                      width: Get.width * 0.25,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: IconButton(
-                                        splashRadius: 20.0,
-                                        onPressed: () =>
-                                            removeSelectedImage(index: 2),
-                                        icon: const Icon(
-                                          AntDesign.closecircle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    _eventController.uploadedIndexes.contains(2)
-                                        ? Positioned(
-                                            top: 5,
-                                            left: 5,
-                                            child: IconButton(
-                                              splashRadius: 20.0,
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                AntDesign.checkcircle,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                              ),
-                      ),
-                      const SizedBox(width: 5),
-                      ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        child: _img3Path == ""
-                            ? GestureDetector(
-                                behavior: HitTestBehavior.translucent,
-                                onTap: () async => await selectImage(index: 3),
-                                child: DottedBorder(
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(15),
-                                  dashPattern: const [10, 10],
-                                  color: Colors.black12,
-                                  strokeWidth: 1.5,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        height: Get.height * 0.10,
-                                        width: Get.width * 0.25,
-                                      ),
-                                      const Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: Icon(
-                                            AntDesign.plus,
-                                            color: Colors.black12,
-                                            size: 34.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            : DottedBorder(
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(15),
-                                dashPattern: const [10, 10],
-                                color: Colors.transparent,
-                                strokeWidth: 1.5,
-                                child: Stack(
-                                  children: [
-                                    Image.file(
-                                      File(_img3Path),
-                                      height: Get.height * 0.10,
-                                      width: Get.width * 0.25,
-                                      fit: BoxFit.cover,
-                                      alignment: Alignment.center,
-                                    ),
-                                    Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: IconButton(
-                                        splashRadius: 20.0,
-                                        onPressed: () =>
-                                            removeSelectedImage(index: 3),
-                                        icon: const Icon(
-                                          AntDesign.closecircle,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                    _eventController.uploadedIndexes.contains(3)
-                                        ? Positioned(
-                                            top: 5,
-                                            left: 5,
-                                            child: IconButton(
-                                              splashRadius: 20.0,
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                AntDesign.checkcircle,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                          )
-                                        : const SizedBox(),
-                                  ],
-                                ),
-                              ),
+                      SizedBox(
+                        width: Get.width * 0.38,
+                        child: inputNumberTextField(
+                          labelText: "To",
+                          textFieldStyle: GoogleFonts.roboto(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black54,
+                          ),
+                          hintStyleStyle: GoogleFonts.roboto(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w300,
+                          ),
+                          controller: _priceToController,
+                        ),
                       ),
                     ],
                   ),
-                  Container(
+                ),
+                const Spacer(flex: 5),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 500),
+                  opacity: _eventController.isUploadingImages.value == true
+                      ? 0.1
+                      : 1,
+                  child: Container(
+                    height: Get.height * 0.06,
                     width: Get.width,
                     margin: const EdgeInsets.only(
-                      top: 30.0,
+                      top: 50.0,
                       left: 40.0,
-                      right: 40.0,
                       bottom: 15.0,
-                    ),
-                    child: Text(
-                      "Details",
-                      style: GoogleFonts.roboto(
-                        color: secondary.withOpacity(0.5),
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 40.0,
                       right: 40.0,
                     ),
-                    child: inputTextField(
-                      labelText: "Event title",
-                      textFieldStyle: GoogleFonts.roboto(
+                    child: elevatedButton(
+                      backgroundColor: primary,
+                      textStyle: GoogleFonts.roboto(
                         fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black54,
-                      ),
-                      hintStyleStyle: GoogleFonts.roboto(
-                        fontSize: 12.0,
                         fontWeight: FontWeight.w300,
+                        color: Colors.white,
                       ),
-                      controller: _titleController,
+                      label: "CREATE",
+                      action: _eventController.isUploadingImages.value == true
+                          ? () {}
+                          : () => handleCreateEvent(),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 10.0,
-                      left: 40.0,
-                      right: 40.0,
-                    ),
-                    child: inputTextArea(
-                      labelText: "More Details",
-                      textFieldStyle: GoogleFonts.roboto(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black54,
-                      ),
-                      hintStyleStyle: GoogleFonts.roboto(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w300,
-                      ),
-                      controller: _moreDetailsController,
-                    ),
-                  ),
-                  Container(
-                    width: Get.width,
-                    margin: const EdgeInsets.only(
-                      top: 30.0,
-                      left: 40.0,
-                      right: 40.0,
-                      bottom: 15.0,
-                    ),
-                    child: Text(
-                      "Price Range",
-                      style: GoogleFonts.roboto(
-                        color: secondary.withOpacity(0.5),
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      left: 40.0,
-                      right: 40.0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: Get.width * 0.38,
-                          child: inputNumberTextField(
-                            labelText: "From",
-                            textFieldStyle: GoogleFonts.roboto(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black54,
-                            ),
-                            hintStyleStyle: GoogleFonts.roboto(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            controller: _priceFromController,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        SizedBox(
-                          width: Get.width * 0.38,
-                          child: inputNumberTextField(
-                            labelText: "To",
-                            textFieldStyle: GoogleFonts.roboto(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black54,
-                            ),
-                            hintStyleStyle: GoogleFonts.roboto(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w300,
-                            ),
-                            controller: _priceToController,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(flex: 5),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    opacity: _eventController.isUploadingImages.value == true
-                        ? 0.1
-                        : 1,
-                    child: Container(
-                      height: Get.height * 0.06,
-                      width: Get.width,
-                      margin: const EdgeInsets.only(
-                        top: 50.0,
-                        left: 40.0,
-                        bottom: 15.0,
-                        right: 40.0,
-                      ),
-                      child: elevatedButton(
-                        backgroundColor: primary,
-                        textStyle: GoogleFonts.roboto(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                        ),
-                        label: "CREATE",
-                        action: _eventController.isUploadingImages.value == true
-                            ? () {}
-                            : () => handleCreateEvent(),
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
+                ),
+                const Spacer(),
+              ],
             ),
           )),
     );

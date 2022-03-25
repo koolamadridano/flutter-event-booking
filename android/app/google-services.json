@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "982128183271",
-    "project_id": "flutter-event-mgmt-f58ed",
-    "storage_bucket": "flutter-event-mgmt-f58ed.appspot.com"
+    "project_number": "630172134435",
+    "project_id": "flutter-event-booking",
+    "storage_bucket": "flutter-event-booking.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:982128183271:android:eadcc72fa6ae39c7e61f42",
+        "mobilesdk_app_id": "1:630172134435:android:4e17ff459d1e7c3d895596",
         "android_client_info": {
           "package_name": "com.example.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "982128183271-3fmjfgd1elieb2lg517vps7s4b22poii.apps.googleusercontent.com",
+          "client_id": "630172134435-i8nk8bn9559mtesjkab657r3fgfqr67g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.app",
-            "certificate_hash": "04685111abdb06839949dba2194f160674e6439f"
+            "certificate_hash": "76e2419c4f44f936449e9a8f8b407c5c764f718c"
           }
         },
         {
-          "client_id": "982128183271-82olnli23dae4euhgqj6j3vkofflescr.apps.googleusercontent.com",
+          "client_id": "630172134435-5p4645vmpifuiskosoqc8ktjpahgaifc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCm93iK6b2QTrDuZijv65Vu_vJkNIBAs-I"
+          "current_key": "AIzaSyC7smMUN46jII9Bln91jy4mVpqhNZbArNA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "982128183271-82olnli23dae4euhgqj6j3vkofflescr.apps.googleusercontent.com",
+              "client_id": "630172134435-5p4645vmpifuiskosoqc8ktjpahgaifc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

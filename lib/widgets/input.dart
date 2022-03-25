@@ -5,10 +5,12 @@ TextField inputTextField({
   required TextStyle textFieldStyle,
   required TextStyle hintStyleStyle,
   required TextEditingController controller,
+  focusNode,
 }) {
   return TextField(
     style: textFieldStyle,
     controller: controller,
+    focusNode: focusNode,
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelText: labelText,
@@ -36,10 +38,12 @@ TextField inputNumberTextField({
   required TextStyle textFieldStyle,
   required TextStyle hintStyleStyle,
   required TextEditingController controller,
+  focusNode,
 }) {
   return TextField(
     style: textFieldStyle,
     controller: controller,
+    focusNode: focusNode,
     keyboardType: TextInputType.number,
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.auto,

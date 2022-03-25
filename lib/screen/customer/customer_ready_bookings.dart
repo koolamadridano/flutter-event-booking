@@ -1,6 +1,5 @@
 import 'package:app/const/colors.dart';
 import 'package:app/controllers/bookingsController.dart';
-import 'package:app/helpers/getCategoryBadge.dart';
 import 'package:app/helpers/random.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';

@@ -7,8 +7,7 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
   Map profileData = {};
 
-  Future<void> createProfile(
-      {userType, firstName, lastName, required contact}) async {
+  Future<void> createProfile({userType, firstName, lastName, contact}) async {
     try {
       final _accountId = Get.put(UserController()).loginData["accountId"];
 
@@ -23,6 +22,7 @@ class ProfileController extends GetxController {
           "userType": userType,
           "firstName": firstName,
           "lastName": lastName,
+          "isVerified": false
         },
       );
       await updateProfileContact(
@@ -41,13 +41,20 @@ class ProfileController extends GetxController {
         Get.toNamed("/event-planner-main");
         return;
       }
+      if (userType == "organizer") {
+        await getProfile(accountId: _accountId);
+        Get.toNamed("/organizer-main");
+        return;
+      }
     } on DioError catch (e) {
-      print(e);
+      print(e.response!.data);
     }
   }
 
   Future<void> getProfile({accountId}) async {
     try {
+      final accountId = Get.put(UserController()).loginData["accountId"];
+
       var profileResponse = await Dio().get(baseUrl + "/profile/$accountId");
       profileData = profileResponse.data;
       prettyPrint("profile", profileResponse.data);

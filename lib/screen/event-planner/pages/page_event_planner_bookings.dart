@@ -1,14 +1,11 @@
 import 'package:app/const/colors.dart';
 import 'package:app/controllers/bookingsController.dart';
 import 'package:app/helpers/getCategoryBadge.dart';
-import 'package:app/helpers/random.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class PageEventPlannerBookings extends StatefulWidget {
   const PageEventPlannerBookings({Key? key}) : super(key: key);

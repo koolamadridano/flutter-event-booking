@@ -1,3 +1,6 @@
+import 'package:app/screen/organizer/organizer-main.dart';
+import 'package:app/screen/preload_after_verified.dart';
+import 'package:app/screen/ticket/verification.dart';
 import 'package:app/screen/user/user_playground.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -108,6 +111,21 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/redirect-event-planner-accept-book",
           page: () => const RedirectEventPlannerAcceptBook(),
+        ),
+
+        GetPage(
+          name: "/organizer-main",
+          page: () => const OrganizerMain(),
+        ),
+        GetPage(
+          name: "/ticket-verification",
+          page: () => const Verification(),
+        ),
+
+        // PRELOAD
+        GetPage(
+          name: "/preload-after-verified",
+          page: () => const PreloadAfterVerified(),
         ),
       ],
     );
