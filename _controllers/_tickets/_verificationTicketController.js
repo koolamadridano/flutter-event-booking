@@ -75,7 +75,7 @@ async function updateProfileVerificationStatus(req, res) {
         // UPDATE SUBMITTED TICKET
         Verification.findOneAndUpdate(
             { _id },
-            { status: true })
+            { status })
             .then((value) => {
                 if (value) 
                     return res.status(200).json({ message: "updated"});
