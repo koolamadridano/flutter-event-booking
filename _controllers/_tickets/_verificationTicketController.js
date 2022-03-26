@@ -33,6 +33,14 @@ async function createVerificationTicket(req, res) {
 // GET
 async function getAllVerificationTickets(req, res) {
     try {
+        const status = req.query.status;
+        if(status == "pending") {
+           return Verification.find({status})
+                .sort({ createdAt: -1 }) // filter by date
+                .select({  __v: 0 }) // Do not return _id and __v
+                .then((value) => res.status(200).json(value))
+                .catch((err) => res.status(400).json(err));
+        }
         return Verification.find()
             .sort({ createdAt: -1 }) // filter by date
             .select({  __v: 0 }) // Do not return _id and __v
