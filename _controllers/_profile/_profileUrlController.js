@@ -17,7 +17,7 @@ module.exports = {
         try {
             const accountId = req.params.id;
             return ProfileUrl.find({ accountId })
-                .sort({ dateJoined: -1 })
+                .sort({ createdAt: -1 })
                 .select({ __v: 0 })
                 .then((value) => res.status(200).json(value))
                 .catch((err) => res.status(400).json(err));
