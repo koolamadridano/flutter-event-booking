@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 Future<Null> dialogDelete(BuildContext context) async {
   final EventController _eventController = Get.put(EventController());

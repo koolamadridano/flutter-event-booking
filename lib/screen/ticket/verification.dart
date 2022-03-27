@@ -92,198 +92,217 @@ class _VerificationState extends State<Verification> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => destroyTextFieldFocus(context),
-      child: WillPopScope(
-        onWillPop: () async => true,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            toolbarHeight: 60.0,
-            backgroundColor: Colors.white,
-            leading: IconButton(
-              splashRadius: 20.0,
-              onPressed: () => Get.toNamed(Get.previousRoute),
-              icon: const Icon(
-                AntDesign.arrowleft,
-                color: secondary,
-              ),
-            ),
-            elevation: 0,
-            shadowColor: Colors.white,
-            // shape: Border(
-            //   bottom: BorderSide(color: secondary.withOpacity(0.2), width: 0.5),
-            // ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Account Verification",
-                  style: GoogleFonts.roboto(
+        onTap: () => destroyTextFieldFocus(context),
+        child: WillPopScope(
+          onWillPop: () async => true,
+          child: Obx(
+            () => Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                toolbarHeight: 60.0,
+                backgroundColor: Colors.white,
+                leading: IconButton(
+                  splashRadius: 20.0,
+                  onPressed: () => Get.toNamed(Get.previousRoute),
+                  icon: const Icon(
+                    AntDesign.arrowleft,
                     color: secondary,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
                   ),
-                  maxLines: 2,
                 ),
-                Text(
-                  "UPLOAD YOUR VALID ID (ANY)",
-                  style: GoogleFonts.roboto(
-                    color: Colors.black54,
-                    fontSize: 10.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  maxLines: 2,
+                elevation: 0,
+                shadowColor: Colors.white,
+                // shape: Border(
+                //   bottom: BorderSide(color: secondary.withOpacity(0.2), width: 0.5),
+                // ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Account Verification",
+                      style: GoogleFonts.roboto(
+                        color: secondary,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      maxLines: 2,
+                    ),
+                    Text(
+                      "UPLOAD YOUR VALID ID (ANY)",
+                      style: GoogleFonts.roboto(
+                        color: Colors.black54,
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            actions: [],
-          ),
-          backgroundColor: Colors.white,
-          body: Container(
-            padding: const EdgeInsets.only(left: 30.0, right: 30.0),
-            width: Get.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(),
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(15)),
-                  child: _img1Path == ""
-                      ? GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () async => await selectImage(),
-                          child: DottedBorder(
-                            borderType: BorderType.RRect,
-                            radius: const Radius.circular(15),
-                            dashPattern: const [10, 10],
-                            color: Colors.black12,
-                            strokeWidth: 1.5,
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                  height: Get.height * 0.30,
-                                  width: Get.width,
-                                ),
-                                const Positioned.fill(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      AntDesign.plus,
-                                      color: Colors.black12,
-                                      size: 34.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                actions: [
+                  _verificationController.verificationImgIsUploading.value
+                      ? IgnorePointer(
+                          ignoring: true,
+                          child: IconButton(
+                            padding: const EdgeInsets.all(0),
+                            onPressed: () {},
+                            icon: const SizedBox(
+                              height: 25.0,
+                              width: 25.0,
+                              child: CircularProgressIndicator(
+                                color: secondary,
+                                strokeWidth: 1.5,
+                              ),
                             ),
                           ),
                         )
-                      : DottedBorder(
-                          borderType: BorderType.RRect,
-                          radius: const Radius.circular(15),
-                          dashPattern: const [10, 10],
-                          color: Colors.transparent,
-                          strokeWidth: 1.5,
-                          child: Stack(
-                            children: [
-                              Image.file(
-                                File(_img1Path),
-                                height: Get.height * 0.30,
-                                width: Get.width,
-                                fit: BoxFit.cover,
-                              ),
-                              Positioned(
-                                top: 25,
-                                right: 30,
-                                child: IconButton(
-                                  splashRadius: 20.0,
-                                  onPressed: () => removeSelectedImage(),
-                                  icon: const Icon(
-                                    AntDesign.closecircle,
-                                    color: Colors.white,
-                                    size: 40.0,
-                                  ),
+                      : const SizedBox(),
+                ],
+              ),
+              backgroundColor: Colors.white,
+              body: Container(
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                width: Get.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      child: _img1Path == ""
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async => await selectImage(),
+                              child: DottedBorder(
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(15),
+                                dashPattern: const [10, 10],
+                                color: Colors.black12,
+                                strokeWidth: 1.5,
+                                child: Stack(
+                                  children: [
+                                    SizedBox(
+                                      height: Get.height * 0.30,
+                                      width: Get.width,
+                                    ),
+                                    const Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Icon(
+                                          AntDesign.plus,
+                                          color: Colors.black12,
+                                          size: 34.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Obx(() => _verificationController
-                                      .verificationImgIsUploading.value
-                                  ? const Positioned(
-                                      top: 25,
-                                      left: 30,
-                                      child: CircularProgressIndicator(
+                            )
+                          : DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: const Radius.circular(15),
+                              dashPattern: const [10, 10],
+                              color: Colors.transparent,
+                              strokeWidth: 1.5,
+                              child: Stack(
+                                children: [
+                                  Image.file(
+                                    File(_img1Path),
+                                    height: Get.height * 0.30,
+                                    width: Get.width,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Positioned(
+                                    top: 25,
+                                    right: 30,
+                                    child: IconButton(
+                                      splashRadius: 20.0,
+                                      onPressed: () => removeSelectedImage(),
+                                      icon: const Icon(
+                                        AntDesign.closecircle,
                                         color: Colors.white,
+                                        size: 40.0,
                                       ),
-                                    )
-                                  : const SizedBox()),
-                            ],
-                          ),
-                        ),
-                ),
-                const Spacer(),
-                SizedBox(
-                  width: Get.width,
-                  child: inputTextField(
-                    controller: _addressController,
-                    focusNode: _addressFocus,
-                    labelText: "Address",
-                    textFieldStyle: GoogleFonts.roboto(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black54,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
-                    hintStyleStyle: GoogleFonts.roboto(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10.0),
-                SizedBox(
-                  width: Get.width,
-                  child: inputNumberTextField(
-                    controller: _contactNoController,
-                    focusNode: _contactFocus,
-                    labelText: "Contact Number",
-                    textFieldStyle: GoogleFonts.roboto(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black54,
-                    ),
-                    hintStyleStyle: GoogleFonts.roboto(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-                const Spacer(flex: 5),
-                IgnorePointer(
-                  ignoring: false,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    opacity: 1,
-                    child: SizedBox(
-                      height: Get.height * 0.06,
+                    const Spacer(),
+                    SizedBox(
                       width: Get.width,
-                      child: elevatedButton(
-                        backgroundColor: primary,
-                        textStyle: GoogleFonts.roboto(
+                      child: inputTextField(
+                        controller: _addressController,
+                        focusNode: _addressFocus,
+                        labelText: "Address",
+                        textFieldStyle: GoogleFonts.roboto(
                           fontSize: 14.0,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
                         ),
-                        label: "SUBMIT TICKET",
-                        action: () => onSubmitTicket(),
+                        hintStyleStyle: GoogleFonts.roboto(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 10.0),
+                    SizedBox(
+                      width: Get.width,
+                      child: inputNumberTextField(
+                        controller: _contactNoController,
+                        focusNode: _contactFocus,
+                        labelText: "Contact Number",
+                        textFieldStyle: GoogleFonts.roboto(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
+                        ),
+                        hintStyleStyle: GoogleFonts.roboto(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ),
+                    const Spacer(flex: 5),
+                    IgnorePointer(
+                      ignoring: _verificationController
+                              .verificationImgIsUploading.value
+                          ? true
+                          : false,
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 500),
+                        opacity: _verificationController
+                                .verificationImgIsUploading.value
+                            ? 0
+                            : 1,
+                        child: AnimatedOpacity(
+                          duration: const Duration(milliseconds: 500),
+                          opacity: 1,
+                          child: SizedBox(
+                            height: Get.height * 0.06,
+                            width: Get.width,
+                            child: elevatedButton(
+                              backgroundColor: primary,
+                              textStyle: GoogleFonts.roboto(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.white,
+                              ),
+                              label: "SUBMIT TICKET",
+                              action: () => onSubmitTicket(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
                 ),
-                const Spacer(),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

@@ -33,13 +33,13 @@ TextField inputTextField({
   );
 }
 
-TextField inputNumberTextField({
-  required String labelText,
-  required TextStyle textFieldStyle,
-  required TextStyle hintStyleStyle,
-  required TextEditingController controller,
-  focusNode,
-}) {
+TextField inputNumberTextField(
+    {required String labelText,
+    required TextStyle textFieldStyle,
+    required TextStyle hintStyleStyle,
+    required TextEditingController controller,
+    focusNode,
+    onChanged}) {
   return TextField(
     style: textFieldStyle,
     controller: controller,

@@ -7,6 +7,7 @@ import 'package:app/controllers/verificationController.dart';
 import 'package:app/helpers/getCategoryBadge.dart';
 import 'package:app/helpers/prettyPrint.dart';
 import 'package:app/ux/alert_dialogs/verification_success_dialog.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,7 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
   final _eventController = Get.put(EventController());
 
   late bool _isVerified;
+  late String _firstName;
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
 
     // INITIALIZE VARIABLES
     _isVerified = _profileController.profileData["isVerified"];
+    _firstName = _profileController.profileData["firstName"];
 
     // METHODS
     initializeVerification();
@@ -48,11 +51,16 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
   Future<void> initializeVerification() async {
     // INITIALIZE VERIFICATION TICKET
     await _verificationController.checkVerificationTicket();
-    // CHECK VERIFICATION TICKET IF DOES EXIST AND NOT YET VERIFIED
 
-    if (!_verificationController.hasVerifiedTicket.value &&
-        _verificationController.hasTicket.value) {
+    final _hasVerifiedTicket = _verificationController.hasVerifiedTicket.value;
+    final _hasTicket = _verificationController.hasTicket.value;
+
+    // CHECK VERIFICATION TICKET IF DOES EXIST AND NOT YET VERIFIED
+    if (!_hasVerifiedTicket && _hasTicket) {
       Timer.periodic(const Duration(seconds: 3), (Timer timer) async {
+        if (!_verificationController.hasTicket.value) {
+          timer.cancel();
+        }
         if (_verificationController.hasVerifiedTicket.value) {
           // END TIMER
           timer.cancel();
@@ -69,16 +77,11 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
             //REDIRECT
             Get.toNamed("/customer-main", preventDuplicates: false);
           });
-
-          print("CONDITION: _hasVerifiedTicket");
         }
-
         if (_verificationController.hasPendingTicket.value) {
           // RE-INITIALIZE VERIFICATION TICKET
           await _verificationController.checkVerificationTicket();
-          print("CONDITION: _hasPendingTicket");
         }
-
         print("TICK #${timer.tick}");
       });
     }
@@ -123,12 +126,24 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                     color: secondary,
                   ),
                 ),
-                IconButton(
-                  splashRadius: 20.0,
-                  onPressed: () => _key.currentState!.openDrawer(),
-                  icon: const Icon(
-                    Feather.menu,
-                    color: secondary,
+                Badge(
+                  showBadge: !_isVerified,
+                  badgeContent: Text(
+                    '1',
+                    style: GoogleFonts.robotoMono(
+                      color: Colors.white,
+                      fontSize: 8.0,
+                    ),
+                  ),
+                  ignorePointer: true,
+                  position: BadgePosition.topEnd(top: 10, end: 5),
+                  child: IconButton(
+                    splashRadius: 20.0,
+                    onPressed: () => _key.currentState!.openDrawer(),
+                    icon: const Icon(
+                      Feather.menu,
+                      color: secondary,
+                    ),
                   ),
                 ),
               ],
@@ -457,7 +472,7 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                       ],
                     ),
                     accountName: Text(
-                      _userController.googleAccount["name"],
+                      _firstName,
                       style: GoogleFonts.roboto(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -575,7 +590,21 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                             )
                           : const SizedBox()
                       : const SizedBox(),
-                  const Spacer(),
+                  const Spacer(flex: 10),
+                  ListTile(
+                    leading: const Icon(
+                      AntDesign.search1,
+                      color: secondary,
+                    ),
+                    title: Text(
+                      'Find Organizers/Supplier',
+                      style: GoogleFonts.roboto(
+                        color: secondary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onTap: () => Get.toNamed("/organizer-listing"),
+                  ),
                   ListTile(
                     leading: const Icon(
                       AntDesign.logout,
@@ -590,6 +619,7 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                     ),
                     onTap: () => _handleLogout(),
                   ),
+                  const Spacer(),
                 ],
               ),
             ),

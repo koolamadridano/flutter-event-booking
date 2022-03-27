@@ -1,79 +1,64 @@
 import 'dart:async';
 import 'package:app/const/colors.dart';
+import 'package:app/const/social_icons.dart';
+import 'package:app/controllers/organizerController.dart';
 import 'package:app/controllers/profileController.dart';
 import 'package:app/controllers/userController.dart';
 import 'package:app/controllers/verificationController.dart';
 import 'package:app/helpers/prettyPrint.dart';
-import 'package:app/screen/event-planner/pages/page_event_planner_active_bookings.dart';
-import 'package:app/screen/event-planner/pages/page_event_planner_bookings.dart';
+import 'package:app/ux/alert_dialogs/deleted_dialog.dart';
 import 'package:app/ux/alert_dialogs/verification_success_dialog.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_indicator/loading_indicator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class EventPlannerMainScreen extends StatefulWidget {
-  const EventPlannerMainScreen({Key? key}) : super(key: key);
+class OrganizerMain extends StatefulWidget {
+  const OrganizerMain({Key? key}) : super(key: key);
 
   @override
-  State<EventPlannerMainScreen> createState() => _EventPlannerMainScreenState();
+  State<OrganizerMain> createState() => _OrganizerMainState();
 }
 
-class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
-    with SingleTickerProviderStateMixin {
+class _OrganizerMainState extends State<OrganizerMain> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  TabController? _tabController;
-
+  final _userController = Get.put(UserController());
   final _profileController = Get.put(ProfileController());
   final _verificationController = Get.put(VerificationController());
-  final _userController = Get.put(UserController());
+  final _organizerController = Get.put(OrganizerController());
 
-  final PageController _pageController = PageController();
   late bool _isVerified;
   late String _firstName;
+  late String _fullName, _contactNo;
 
-  int _currentPageIndex = 0;
-  String _currentPageTitle = "Open Bookings";
+  String _deleteId = "";
 
-  Timer? timer;
-
-  void _handleLogout() {
-    _userController.signOutGoogle();
-  }
-
-  void _onPageViewChange(int page) {
-    _tabController!.animateTo(page);
-    setState(() {
-      _currentPageIndex = page;
-    });
-    switch (page) {
-      case 0:
-        setState(() {
-          _currentPageTitle = "Open Bookings";
-        });
-        break;
-      case 1:
-        setState(() {
-          _currentPageTitle = "Active Bookings";
-        });
-        break;
-    }
-  }
+  late Future<dynamic> _images;
+  late Future<dynamic> _links;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
 
     // DEBUG PRINT
-    prettyPrint("EVENT_PLANNER_PROFILE", _profileController.profileData);
+    prettyPrint("ORGANIZER_PROFILE", _profileController.profileData);
 
     // INITIALIZE VARIABLES
     _isVerified = _profileController.profileData["isVerified"];
     _firstName = _profileController.profileData["firstName"];
+    _fullName = _profileController.profileData["firstName"] +
+        " " +
+        _profileController.profileData["lastName"];
 
+    _contactNo = _profileController.profileData["contact"]["number"]
+        .toString()
+        .replaceRange(0, 1, "+63 ");
+
+    _images = _organizerController.getImages();
+    _links = _organizerController.getLinks();
     // METHODS
     initializeVerification();
   }
@@ -105,7 +90,7 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
             // RESET
             _verificationController.hasPendingTicket.value = false;
             //REDIRECT
-            Get.toNamed("/event-planner-main", preventDuplicates: false);
+            Get.toNamed("/organizer-main", preventDuplicates: false);
           });
         }
         if (_verificationController.hasPendingTicket.value) {
@@ -117,11 +102,34 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
     }
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _tabController?.dispose();
-    super.dispose();
+  Future<void> _handleLogout() async {
+    await _userController.signOutGoogle();
+  }
+
+  Future<void> _launchURL(url) async {
+    if (!await launch(url)) throw 'Could not launch $url';
+  }
+
+  Future<void> onDelete(id, publicId) async {
+    await _organizerController.deleteImage(id, publicId);
+    _refreshImages();
+  }
+
+  Future<void> onDeleteLink(id) async {
+    await _organizerController.deleteLink(id);
+    _refreshLinks();
+  }
+
+  void _refreshLinks() {
+    setState(() {
+      _links = _organizerController.getLinks();
+    });
+  }
+
+  void _refreshImages() {
+    setState(() {
+      _images = _organizerController.getImages();
+    });
   }
 
   @override
@@ -143,7 +151,7 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
               //   bottom: BorderSide(color: secondary.withOpacity(0.2), width: 0.5),
               // ),
               title: Text(
-                _currentPageTitle,
+                "Profile",
                 style: GoogleFonts.fredokaOne(
                   color: secondary.withOpacity(0.8),
                   fontSize: 18.0,
@@ -172,58 +180,233 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                   ),
                 ),
               ],
-              bottom: _tabController == null
-                  ? null
-                  : TabBar(
-                      controller: _tabController,
-                      labelColor: secondary,
-                      unselectedLabelColor: Colors.black38,
-                      isScrollable: true,
-                      labelPadding: const EdgeInsets.only(
-                        top: 15.0,
-                        bottom: 15.0,
-                        left: 15.0,
-                        right: 15.0,
+              bottom: PreferredSize(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 40.0,
+                      backgroundImage: NetworkImage(
+                        _userController.googleAccount["avatar"],
                       ),
-                      labelStyle: GoogleFonts.roboto(fontSize: 11),
-                      indicatorWeight: 1,
-                      physics: const ScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
-                      ),
-                      // indicatorColor: Colors.black38,
-                      indicatorSize: TabBarIndicatorSize.label,
-                      indicatorColor: Colors.black26,
-                      onTap: (index) {
-                        _pageController.jumpToPage(index);
-                        print("TAB INDEX $index");
-                      },
-                      tabs: [
-                        SizedBox(
-                          width: Get.width * 0.40,
-                          child: const Text(
-                            "My Bookings",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          width: Get.width * 0.40,
-                          child: const Text(
-                            "Active Bookings",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
                     ),
-            ),
-            body: PageView(
-              controller: _pageController,
-              onPageChanged: _onPageViewChange,
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
+                    const SizedBox(height: 10.0),
+                    Text(
+                      _fullName,
+                      style: GoogleFonts.roboto(
+                        color: secondary,
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      maxLines: 2,
+                    ),
+                    Text(
+                      _contactNo,
+                      style: GoogleFonts.robotoMono(
+                        color: Colors.black54,
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      maxLines: 2,
+                    ),
+                    const SizedBox(height: 20.0),
+                  ],
+                ),
+                preferredSize: const Size.fromHeight(150),
               ),
-              children: const [
-                PageEventPlannerBookings(),
-                PageEventPlannerActiveBookings(),
+            ),
+            body: Column(
+              children: [
+                _organizerController.isDeletingLink.value
+                    ? Container(
+                        margin: const EdgeInsets.only(bottom: 10.0),
+                        child: const LinearProgressIndicator(
+                            color: secondary, minHeight: 1.5),
+                      )
+                    : const SizedBox(),
+                FutureBuilder(
+                  future: _links,
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.none) {
+                      return const SizedBox();
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SizedBox();
+                    }
+                    if (snapshot.data == null) {
+                      return const SizedBox();
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data.length == 0) {
+                        return const SizedBox();
+                      }
+                    }
+                    return Container(
+                      width: Get.width,
+                      height: Get.height * 0.06,
+                      margin: const EdgeInsets.only(
+                        left: 10.0,
+                        right: 10.0,
+                        bottom: 5.0,
+                      ),
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                        ),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, int index) {
+                          return GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () => _launchURL(
+                              snapshot.data[index]["url"],
+                            ),
+                            onDoubleTap: () =>
+                                onDeleteLink(snapshot.data[index]["_id"]),
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 250, 250, 250),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10.0),
+                                  ),
+                                ),
+                                margin: const EdgeInsets.only(right: 10.0),
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  children: [
+                                    getIcon(snapshot.data[index]["title"])
+                                        as Widget,
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      snapshot.data[index]["title"],
+                                      style: GoogleFonts.roboto(
+                                        color: secondary,
+                                        fontSize: 14.0,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+                FutureBuilder(
+                  future: _images,
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.none) {
+                      return const LinearProgressIndicator(
+                        minHeight: 2,
+                        color: secondary,
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const LinearProgressIndicator(
+                        minHeight: 2,
+                        color: secondary,
+                      );
+                    }
+                    if (snapshot.data == null) {
+                      return const LinearProgressIndicator(
+                        minHeight: 2,
+                        color: secondary,
+                      );
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data.length == 0) {
+                        return const Center(
+                          child: Icon(
+                            MaterialIcons.inbox,
+                            color: Colors.black26,
+                            size: 82.0,
+                          ),
+                        );
+                      }
+                    }
+                    return Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                          left: 10.0,
+                          right: 10.0,
+                          top: 10.0,
+                        ),
+                        child: RefreshIndicator(
+                          onRefresh: () async => _refreshImages(),
+                          child: GridView.builder(
+                            physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
+                            ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                            ),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, int index) {
+                              return Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    fadeInDuration: const Duration(seconds: 1),
+                                    fadeOutDuration:
+                                        const Duration(milliseconds: 500),
+                                    imageUrl: snapshot.data[index]["url"],
+                                    placeholder: (context, url) => Container(
+                                      color: const Color.fromARGB(
+                                          255, 250, 250, 250),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
+                                  _deleteId == snapshot.data[index]["_id"]
+                                      ? Positioned.fill(
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: Transform.scale(
+                                              scale: 0.6,
+                                              child:
+                                                  const CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 5,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Positioned.fill(
+                                          child: Align(
+                                            alignment: Alignment.topRight,
+                                            child: IconButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    _deleteId = snapshot
+                                                        .data[index]["_id"];
+                                                  });
+                                                  await onDelete(
+                                                    snapshot.data[index]["_id"],
+                                                    snapshot.data[index]
+                                                        ["publicId"],
+                                                  );
+                                                },
+                                                icon: const Icon(
+                                                  AntDesign.closecircle,
+                                                  color: Colors.white,
+                                                  size: 30.0,
+                                                )),
+                                          ),
+                                        ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
             drawer: Drawer(
@@ -313,49 +496,37 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                   _isVerified
                       ? ListTile(
                           leading: const Icon(
-                            Ionicons.create_outline,
+                            Feather.upload,
                             color: secondary,
                           ),
                           title: Text(
-                            'Create Event',
+                            'Upload Photo',
                             style: GoogleFonts.roboto(
                               color: secondary,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          onTap: () => Get.toNamed("/event-planner-create"),
+                          onTap: () {
+                            Get.toNamed("/organizer-upload");
+                          },
                         )
                       : const SizedBox(),
                   _isVerified
                       ? ListTile(
                           leading: const Icon(
-                            AntDesign.calendar,
+                            Feather.link,
                             color: secondary,
                           ),
                           title: Text(
-                            'My Events',
+                            'Social Links',
                             style: GoogleFonts.roboto(
                               color: secondary,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          onTap: () => Get.toNamed("/event-planner-events"),
-                        )
-                      : const SizedBox(),
-                  _isVerified
-                      ? ListTile(
-                          leading: const Icon(
-                            Octicons.history,
-                            color: secondary,
-                          ),
-                          title: Text(
-                            'History',
-                            style: GoogleFonts.roboto(
-                              color: secondary,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          onTap: () => Get.toNamed("/event-planner-history"),
+                          onTap: () {
+                            Get.toNamed("/organizer-social-links");
+                          },
                         )
                       : const SizedBox(),
                   !_verificationController.hasTicket.value
@@ -433,21 +604,7 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                             )
                           : const SizedBox()
                       : const SizedBox(),
-                  const Spacer(flex: 10),
-                  ListTile(
-                    leading: const Icon(
-                      AntDesign.search1,
-                      color: secondary,
-                    ),
-                    title: Text(
-                      'Find Organizers/Supplier',
-                      style: GoogleFonts.roboto(
-                        color: secondary,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    onTap: () => Get.toNamed("/organizer-listing"),
-                  ),
+                  const Spacer(),
                   ListTile(
                     leading: const Icon(
                       AntDesign.logout,
@@ -462,7 +619,6 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                     ),
                     onTap: () => _handleLogout(),
                   ),
-                  const Spacer(),
                 ],
               ),
             ),
