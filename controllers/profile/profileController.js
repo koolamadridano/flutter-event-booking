@@ -17,14 +17,14 @@ const getAllProfiles = async (req, res) =>  {
     if(userType === null || userType === "" || userType === undefined) {
       return Profile.find()
         .sort({ createdAt: -1 }) // filter by date
-        .select({ _id: 0, __v: 0 }) // Do not return _id and __v
+        .select({  __v: 0 }) // Do not return _id and __v
         .then((value) => res.status(200).json(value))
         .catch((err) => res.status(400).json(err));
     }
 
     return Profile.find({ userType })
       .sort({ createdAt: -1 }) // filter by date
-      .select({ _id: 0, __v: 0 }) // Do not return _id and __v
+      .select({ __v: 0 }) // Do not return _id and __v
       .then((value) => res.status(200).json(value))
       .catch((err) => res.status(400).json(err));
   } catch (error) {
@@ -36,7 +36,7 @@ const getProfile = async (req, res) =>  {
   try {
       const accountId = req.params.id;
       Profile.findOne({ accountId })
-        .select({ _id: 0, __v: 0 })
+        .select({ __v: 0 })
         .then((value) => {
           if (!value) 
             return res.status(400).json({ message: "accountId not found" });
