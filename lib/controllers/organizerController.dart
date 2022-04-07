@@ -1,11 +1,13 @@
 import 'package:app/const/url.dart';
 import 'package:app/controllers/profileController.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class OrganizerController extends GetxController {
   Map selectedOrganizer = {};
+  Map selectedOrganizerImg = {};
   RxBool imgIsUploading = false.obs;
   RxBool isCreatingLink = false.obs;
   RxBool hasLinks = false.obs;
@@ -18,6 +20,8 @@ class OrganizerController extends GetxController {
       final _profile = Get.put(ProfileController());
       final payload = http.FormData.fromMap({
         "accountId": _profile.profileData["accountId"],
+        "category": data["category"],
+        "description": data["description"],
         'img': await http.MultipartFile.fromFile(
           data["img"]["path"],
           filename: data["img"]["name"],
@@ -41,11 +45,14 @@ class OrganizerController extends GetxController {
     }
   }
 
-  Future<dynamic> getImages() async {
+  Future<dynamic> getImages({accountId, category}) async {
     try {
-      final _profile = Get.put(ProfileController());
       var response = await http.Dio().get(
-        baseUrl + "/photos/${_profile.profileData["accountId"]}",
+        baseUrl + "/photos",
+        queryParameters: {
+          "accountId": accountId,
+          "category": category,
+        },
       );
 
       return response.data;

@@ -28,6 +28,8 @@ class _UserInitializeProfileState extends State<UserInitializeProfile> {
   late FocusNode _contactNumberFocus;
 
   bool _hasAgreed = false;
+  bool _hasAgreedToTerms = false;
+
   String _selectedRole = "customer";
 
   Future<void> handleCreateProfile() async {
@@ -163,7 +165,6 @@ class _UserInitializeProfileState extends State<UserInitializeProfile> {
                   title: DropdownButton(
                     value: _selectedRole,
                     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    underline: const SizedBox(),
                     items: [
                       DropdownMenuItem(
                         child: Column(
@@ -247,21 +248,33 @@ class _UserInitializeProfileState extends State<UserInitializeProfile> {
                       });
                     },
                   ),
-                  subtitle: Text(
-                    "By clicking Save Changes, I confirm that I have read and agree to the Booking Applications Terms of Service, Privacy Policy, and to receive emails and updates.",
+                ),
+                CheckboxListTile(
+                  value: _hasAgreedToTerms,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (v) {
+                    if (!_hasAgreedToTerms) {
+                      setState(() {
+                        _hasAgreedToTerms = v as bool;
+                      });
+                      Get.toNamed("/terms-agreement-and-policy");
+                    }
+                  },
+                  title: Text(
+                    "I agree to the Terms, Agreement and Policy of Event Booking Application",
                     style: GoogleFonts.roboto(
-                      fontSize: 10.0,
+                      fontSize: 13.0,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black38,
+                      color: Colors.black54,
                     ),
                   ),
                 ),
-                const Spacer(flex: 5),
+                const Spacer(flex: 3),
                 IgnorePointer(
-                  ignoring: _hasAgreed ? false : true,
+                  ignoring: _hasAgreed && _hasAgreedToTerms ? false : true,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 500),
-                    opacity: _hasAgreed ? 1 : 0,
+                    opacity: _hasAgreed && _hasAgreedToTerms ? 1 : 0,
                     child: SizedBox(
                       height: Get.height * 0.06,
                       width: Get.width,
@@ -272,7 +285,7 @@ class _UserInitializeProfileState extends State<UserInitializeProfile> {
                           fontWeight: FontWeight.w300,
                           color: Colors.white,
                         ),
-                        label: "SAVE CHANGES",
+                        label: "SUBMIT",
                         action: () => handleCreateProfile(),
                       ),
                     ),

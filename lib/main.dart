@@ -3,7 +3,7 @@ import 'package:app/routes/event_organizer.dart';
 import 'package:app/routes/event_planner.dart';
 import 'package:app/routes/tickets.dart';
 import 'package:app/routes/users.dart';
-import 'package:app/screen/user/user_playground.dart';
+import 'package:app/screen/user/user_terms_and_agreement.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/user-sign-in",
       getPages: [
         GetPage(
-          name: "/playground",
-          page: () => const PlaygroundScreen(),
+          name: "/terms-agreement-and-policy",
+          page: () => const TermsAndAgreement(),
         ),
         ...routeUsers,
         ...routeCustomers,

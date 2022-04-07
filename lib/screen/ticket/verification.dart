@@ -28,11 +28,6 @@ class _VerificationState extends State<Verification> {
   String _img1Path = "";
   String _img1Name = "";
 
-  late TextEditingController _addressController;
-  late TextEditingController _contactNoController;
-
-  late FocusNode _addressFocus;
-  late FocusNode _contactFocus;
   var path;
 
   Future<void> selectImage() async {
@@ -53,22 +48,12 @@ class _VerificationState extends State<Verification> {
   }
 
   Future<void> onSubmitTicket() async {
-    final _contactNo = _contactNoController.text.trim();
-    final _address = _addressController.text.trim();
-
     if (_img1Path.isEmpty) {
       return selectImage();
     }
-    if (_address.isEmpty) {
-      return _addressFocus.requestFocus();
-    }
-    if (_contactNo.isEmpty) {
-      return _contactFocus.requestFocus();
-    }
+
     await _verificationController.submitVerificationTicket(
       data: {
-        "address": _address,
-        "contactNo": _contactNo,
         "img": {
           "path": _img1Path,
           "name": _img1Name,
@@ -76,17 +61,6 @@ class _VerificationState extends State<Verification> {
       },
     );
     Get.toNamed(Get.previousRoute);
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _addressController = TextEditingController();
-    _contactNoController = MaskedTextController(mask: '0000 000 0000');
-    _addressFocus = FocusNode();
-    _contactFocus = FocusNode();
-    // path = Get.arguments["path"];
   }
 
   @override
@@ -228,42 +202,6 @@ class _VerificationState extends State<Verification> {
                                 ],
                               ),
                             ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      width: Get.width,
-                      child: inputTextField(
-                        controller: _addressController,
-                        focusNode: _addressFocus,
-                        labelText: "Address",
-                        textFieldStyle: GoogleFonts.roboto(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black54,
-                        ),
-                        hintStyleStyle: GoogleFonts.roboto(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    SizedBox(
-                      width: Get.width,
-                      child: inputNumberTextField(
-                        controller: _contactNoController,
-                        focusNode: _contactFocus,
-                        labelText: "Contact Number",
-                        textFieldStyle: GoogleFonts.roboto(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black54,
-                        ),
-                        hintStyleStyle: GoogleFonts.roboto(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
                     ),
                     const Spacer(flex: 5),
                     IgnorePointer(

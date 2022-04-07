@@ -436,6 +436,20 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                   const Spacer(flex: 10),
                   ListTile(
                     leading: const Icon(
+                      AntDesign.deleteuser,
+                      color: secondary,
+                    ),
+                    title: Text(
+                      'Delete Account',
+                      style: GoogleFonts.roboto(
+                        color: secondary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onTap: () => _profileController.deleteProfile(),
+                  ),
+                  ListTile(
+                    leading: const Icon(
                       AntDesign.search1,
                       color: secondary,
                     ),

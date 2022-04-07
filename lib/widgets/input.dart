@@ -72,10 +72,12 @@ TextField inputTextArea({
   required TextStyle textFieldStyle,
   required TextStyle hintStyleStyle,
   required TextEditingController controller,
+  focusNode,
 }) {
   return TextField(
     style: textFieldStyle,
     controller: controller,
+    focusNode: focusNode,
     maxLines: 3,
     maxLength: 255,
     keyboardType: TextInputType.multiline,

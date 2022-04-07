@@ -1,3 +1,5 @@
+import 'package:app/screen/organizer/organizer_img_preview.dart';
+import 'package:app/screen/organizer/organizer_links.dart';
 import 'package:app/screen/organizer/organizer_list_preview.dart';
 import 'package:app/screen/organizer/organizer_main.dart';
 import 'package:app/screen/organizer/organizer_social_links.dart';
@@ -26,5 +28,13 @@ final List<GetPage<dynamic>> routeEventOrganizer = [
   GetPage(
     name: "/organizer-listing-preview",
     page: () => const OrganizerListingPreview(),
+  ),
+  GetPage(
+    name: "/organizer-posted-links",
+    page: () => const OrganizerPostedLinks(),
+  ),
+  GetPage(
+    name: "/organizer-img-preview",
+    page: () => const OrganizerImagePreview(),
   ),
 ];

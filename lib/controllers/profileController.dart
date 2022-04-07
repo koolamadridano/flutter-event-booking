@@ -74,4 +74,21 @@ class ProfileController extends GetxController {
       print(e);
     }
   }
+
+  Future<void> deleteProfile() async {
+    final _user = Get.put(UserController());
+
+    // REDIRECT TO PRELOAD
+    Get.toNamed("/user-sign-in-preload");
+
+    await Dio().delete(
+      baseUrl + "/profile/${_user.loginData["accountId"]}",
+    );
+    await Dio().delete(
+      baseUrl + "/ticket/verification/${_user.loginData["accountId"]}",
+    );
+    await _user.signOutGoogle();
+
+    Get.toNamed("/user-sign-in");
+  }
 }

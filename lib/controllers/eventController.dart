@@ -117,7 +117,7 @@ class EventController extends GetxController {
     await http.Dio().delete(baseUrl + "/event/$id");
     await getEventsById();
     isDeleting.value = false;
-    Get.toNamed("/event-planner-events");
+    Get.toNamed("/event-planner-main");
   }
 
   Future<dynamic> _upload(formData, index) async {

@@ -23,7 +23,10 @@ class OrganizerMain extends StatefulWidget {
   State<OrganizerMain> createState() => _OrganizerMainState();
 }
 
-class _OrganizerMainState extends State<OrganizerMain> {
+class _OrganizerMainState extends State<OrganizerMain>
+    with SingleTickerProviderStateMixin {
+  TabController? _tabController;
+
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final _userController = Get.put(UserController());
   final _profileController = Get.put(ProfileController());
@@ -32,12 +35,20 @@ class _OrganizerMainState extends State<OrganizerMain> {
 
   late bool _isVerified;
   late String _firstName;
-  late String _fullName, _contactNo;
+  late String _selectedTab;
 
   String _deleteId = "";
 
   late Future<dynamic> _images;
-  late Future<dynamic> _links;
+
+  final List<Map<String, dynamic>> _categories = [
+    {"index": 0, "name": "Wedding", "tag": "custom-wedding"},
+    {"index": 1, "name": "Disco", "tag": "custom-disco"},
+    {"index": 2, "name": "Promenade", "tag": "custom-promenade"},
+    {"index": 3, "name": "Fashion Show", "tag": "custom-fashion-show"},
+    {"index": 4, "name": "Ball", "tag": "custom-ball"},
+    {"index": 5, "name": "Party", "tag": "custom-party"}
+  ];
 
   @override
   void initState() {
@@ -47,18 +58,18 @@ class _OrganizerMainState extends State<OrganizerMain> {
     prettyPrint("ORGANIZER_PROFILE", _profileController.profileData);
 
     // INITIALIZE VARIABLES
+    _tabController = TabController(
+      length: _categories.length,
+      vsync: this,
+    );
+
     _isVerified = _profileController.profileData["isVerified"];
     _firstName = _profileController.profileData["firstName"];
-    _fullName = _profileController.profileData["firstName"] +
-        " " +
-        _profileController.profileData["lastName"];
 
-    _contactNo = _profileController.profileData["contact"]["number"]
-        .toString()
-        .replaceRange(0, 1, "+63 ");
-
-    _images = _organizerController.getImages();
-    _links = _organizerController.getLinks();
+    _images = _organizerController.getImages(
+      accountId: _profileController.profileData["accountId"],
+      category: "custom-wedding",
+    );
     // METHODS
     initializeVerification();
   }
@@ -106,29 +117,27 @@ class _OrganizerMainState extends State<OrganizerMain> {
     await _userController.signOutGoogle();
   }
 
-  Future<void> _launchURL(url) async {
-    if (!await launch(url)) throw 'Could not launch $url';
-  }
-
   Future<void> onDelete(id, publicId) async {
     await _organizerController.deleteImage(id, publicId);
     _refreshImages();
   }
 
-  Future<void> onDeleteLink(id) async {
-    await _organizerController.deleteLink(id);
-    _refreshLinks();
-  }
-
-  void _refreshLinks() {
+  void _refreshImages() {
     setState(() {
-      _links = _organizerController.getLinks();
+      _images = _organizerController.getImages(
+        accountId: _profileController.profileData["accountId"],
+        category: _selectedTab,
+      );
     });
   }
 
-  void _refreshImages() {
+  void _onTabChange(v) {
     setState(() {
-      _images = _organizerController.getImages();
+      _selectedTab = v["tag"];
+      _images = _organizerController.getImages(
+        accountId: _profileController.profileData["accountId"],
+        category: v["tag"],
+      );
     });
   }
 
@@ -151,7 +160,7 @@ class _OrganizerMainState extends State<OrganizerMain> {
               //   bottom: BorderSide(color: secondary.withOpacity(0.2), width: 0.5),
               // ),
               title: Text(
-                "Profile",
+                "Welcome Back, $_firstName",
                 style: GoogleFonts.fredokaOne(
                   color: secondary.withOpacity(0.8),
                   fontSize: 18.0,
@@ -159,6 +168,15 @@ class _OrganizerMainState extends State<OrganizerMain> {
                 ),
               ),
               actions: [
+                IconButton(
+                  splashRadius: 20.0,
+                  onPressed: () => Get.toNamed("/organizer-posted-links"),
+                  icon: const Icon(
+                    Feather.external_link,
+                    color: secondary,
+                    size: 23.0,
+                  ),
+                ),
                 Badge(
                   showBadge: !_isVerified,
                   badgeContent: Text(
@@ -180,234 +198,173 @@ class _OrganizerMainState extends State<OrganizerMain> {
                   ),
                 ),
               ],
-              bottom: PreferredSize(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 40.0,
-                      backgroundImage: NetworkImage(
-                        _userController.googleAccount["avatar"],
+              bottom: _tabController == null
+                  ? null
+                  : TabBar(
+                      controller: _tabController,
+                      labelColor: secondary,
+                      unselectedLabelColor: Colors.black38,
+                      isScrollable: true,
+                      labelPadding: const EdgeInsets.only(
+                        top: 15.0,
+                        bottom: 15.0,
+                        left: 15.0,
+                        right: 15.0,
                       ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Text(
-                      _fullName,
-                      style: GoogleFonts.roboto(
-                        color: secondary,
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.w400,
+                      labelStyle: GoogleFonts.roboto(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
                       ),
-                      maxLines: 2,
-                    ),
-                    Text(
-                      _contactNo,
-                      style: GoogleFonts.robotoMono(
-                        color: Colors.black54,
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w400,
+                      indicatorWeight: 1,
+                      physics: const ScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics(),
                       ),
-                      maxLines: 2,
+                      unselectedLabelStyle: GoogleFonts.roboto(fontSize: 11),
+                      // indicatorColor: Colors.black38,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      indicatorColor: Colors.transparent,
+                      onTap: (index) {
+                        _onTabChange(
+                          _categories
+                              .where((element) => element["index"] == index)
+                              .toSet()
+                              .elementAt(0),
+                        );
+                      },
+
+                      tabs: _categories
+                          .map((element) => GestureDetector(
+                                child: Text(element["name"].toString()),
+                              ))
+                          .toList(),
                     ),
-                    const SizedBox(height: 20.0),
-                  ],
-                ),
-                preferredSize: const Size.fromHeight(150),
-              ),
             ),
-            body: Column(
-              children: [
-                _organizerController.isDeletingLink.value
-                    ? Container(
-                        margin: const EdgeInsets.only(bottom: 10.0),
-                        child: const LinearProgressIndicator(
-                            color: secondary, minHeight: 1.5),
-                      )
-                    : const SizedBox(),
-                FutureBuilder(
-                  future: _links,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.none) {
-                      return const SizedBox();
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const SizedBox();
-                    }
-                    if (snapshot.data == null) {
-                      return const SizedBox();
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data.length == 0) {
-                        return const SizedBox();
-                      }
-                    }
-                    return Container(
-                      width: Get.width,
-                      height: Get.height * 0.06,
-                      margin: const EdgeInsets.only(
-                        left: 10.0,
-                        right: 10.0,
-                        bottom: 5.0,
-                      ),
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics(),
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, int index) {
-                          return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () => _launchURL(
-                              snapshot.data[index]["url"],
-                            ),
-                            onDoubleTap: () =>
-                                onDeleteLink(snapshot.data[index]["_id"]),
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 250, 250, 250),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10.0),
-                                  ),
-                                ),
-                                margin: const EdgeInsets.only(right: 10.0),
-                                padding: const EdgeInsets.all(15.0),
-                                child: Row(
-                                  children: [
-                                    getIcon(snapshot.data[index]["title"])
-                                        as Widget,
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      snapshot.data[index]["title"],
-                                      style: GoogleFonts.roboto(
-                                        color: secondary,
-                                        fontSize: 14.0,
-                                        height: 1.4,
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          );
-                        },
+            body: FutureBuilder(
+              future: _images,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.none) {
+                  return const LinearProgressIndicator(
+                    minHeight: 2,
+                    color: secondary,
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const LinearProgressIndicator(
+                    minHeight: 2,
+                    color: secondary,
+                  );
+                }
+                if (snapshot.data == null) {
+                  return const LinearProgressIndicator(
+                    minHeight: 2,
+                    color: secondary,
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.data.length == 0) {
+                    return const Center(
+                      child: Icon(
+                        MaterialIcons.inbox,
+                        color: Colors.black26,
+                        size: 82.0,
                       ),
                     );
-                  },
-                ),
-                FutureBuilder(
-                  future: _images,
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.none) {
-                      return const LinearProgressIndicator(
-                        minHeight: 2,
-                        color: secondary,
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const LinearProgressIndicator(
-                        minHeight: 2,
-                        color: secondary,
-                      );
-                    }
-                    if (snapshot.data == null) {
-                      return const LinearProgressIndicator(
-                        minHeight: 2,
-                        color: secondary,
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      if (snapshot.data.length == 0) {
-                        return const Center(
-                          child: Icon(
-                            MaterialIcons.inbox,
-                            color: Colors.black26,
-                            size: 82.0,
-                          ),
-                        );
-                      }
-                    }
-                    return Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.only(
-                          left: 10.0,
-                          right: 10.0,
-                          top: 10.0,
-                        ),
-                        child: RefreshIndicator(
-                          onRefresh: () async => _refreshImages(),
-                          child: GridView.builder(
-                            physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics(),
-                            ),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                            ),
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, int index) {
-                              return Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    fadeInDuration: const Duration(seconds: 1),
-                                    fadeOutDuration:
-                                        const Duration(milliseconds: 500),
-                                    imageUrl: snapshot.data[index]["url"],
-                                    placeholder: (context, url) => Container(
-                                      color: const Color.fromARGB(
-                                          255, 250, 250, 250),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
+                  }
+                }
+                return Container(
+                  margin: const EdgeInsets.only(
+                    left: 10.0,
+                    right: 10.0,
+                    top: 10.0,
+                  ),
+                  child: RefreshIndicator(
+                    onRefresh: () async => _refreshImages(),
+                    child: GridView.builder(
+                      physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics(),
+                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                      ),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed("/organizer-img-preview");
+                            _organizerController.selectedOrganizerImg =
+                                snapshot.data[index];
+                          },
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              Hero(
+                                tag: snapshot.data[index]["_id"],
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  fadeInDuration: const Duration(seconds: 1),
+                                  fadeOutDuration: const Duration(
+                                    milliseconds: 500,
                                   ),
-                                  _deleteId == snapshot.data[index]["_id"]
-                                      ? Positioned.fill(
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: Transform.scale(
-                                              scale: 0.6,
-                                              child:
-                                                  const CircularProgressIndicator(
-                                                color: Colors.white,
-                                                strokeWidth: 5,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : Positioned.fill(
-                                          child: Align(
-                                            alignment: Alignment.topRight,
-                                            child: IconButton(
-                                                onPressed: () async {
-                                                  setState(() {
-                                                    _deleteId = snapshot
-                                                        .data[index]["_id"];
-                                                  });
-                                                  await onDelete(
-                                                    snapshot.data[index]["_id"],
-                                                    snapshot.data[index]
-                                                        ["publicId"],
-                                                  );
-                                                },
-                                                icon: const Icon(
-                                                  AntDesign.closecircle,
-                                                  color: Colors.white,
-                                                  size: 30.0,
-                                                )),
+                                  imageUrl: snapshot.data[index]["url"],
+                                  placeholder: (context, url) => Container(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      250,
+                                      250,
+                                      250,
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
+                              _deleteId == snapshot.data[index]["_id"]
+                                  ? Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: Transform.scale(
+                                          scale: 0.6,
+                                          child:
+                                              const CircularProgressIndicator(
+                                            color: Colors.white,
+                                            strokeWidth: 5,
                                           ),
                                         ),
-                                ],
-                              );
-                            },
+                                      ),
+                                    )
+                                  : Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: IconButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                _deleteId =
+                                                    snapshot.data[index]["_id"];
+                                              });
+                                              await onDelete(
+                                                snapshot.data[index]["_id"],
+                                                snapshot.data[index]
+                                                    ["publicId"],
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              AntDesign.closecircle,
+                                              color: Colors.white,
+                                              size: 30.0,
+                                            )),
+                                      ),
+                                    ),
+                            ],
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
             drawer: Drawer(
               backgroundColor: Colors.white,
@@ -605,6 +562,20 @@ class _OrganizerMainState extends State<OrganizerMain> {
                           : const SizedBox()
                       : const SizedBox(),
                   const Spacer(),
+                  ListTile(
+                    leading: const Icon(
+                      AntDesign.deleteuser,
+                      color: secondary,
+                    ),
+                    title: Text(
+                      'Delete Account',
+                      style: GoogleFonts.roboto(
+                        color: secondary,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    onTap: () => _profileController.deleteProfile(),
+                  ),
                   ListTile(
                     leading: const Icon(
                       AntDesign.logout,

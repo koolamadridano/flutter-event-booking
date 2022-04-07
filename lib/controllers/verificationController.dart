@@ -18,8 +18,6 @@ class VerificationController extends GetxController {
         "accountId": _profile.profileData["accountId"],
         "firstName": _profile.profileData["firstName"],
         "lastName": _profile.profileData["lastName"],
-        "address": data["address"],
-        "contactNumber": data["contactNo"],
         "status": "pending",
         'img': await http.MultipartFile.fromFile(
           data["img"]["path"],
