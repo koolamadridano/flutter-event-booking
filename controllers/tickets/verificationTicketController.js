@@ -62,10 +62,7 @@ const getSingleVerificationTicket = async (req, res) => {
 
 const updateProfileVerificationStatus = async (req, res) => {
     try {
-        const _id = req.body.verificationObjId;
-        const accountId = req.body.accountId;
-        const isVerified = req.body.isVerified;
-        const status = req.body.status;
+        const { _id, accountId, isVerified, status } = req.body;
 
         // UPDATE PROFILE STATUS
         Profile.findOneAndUpdate(
