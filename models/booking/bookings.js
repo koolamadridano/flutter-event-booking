@@ -18,9 +18,7 @@ const enumCategory = [
   "custom-party",
 ];
 
-Bookings = mongoose.model(
-  "bookings",
-  new Schema({
+const BookingsSchema =  new Schema({
        ref: {
         type: String,
         required: [true, "ref is required"],
@@ -99,6 +97,5 @@ Bookings = mongoose.model(
       enum: enumStatus,
       required: [true, "status is required"],
     },
-  })
-);
-module.exports = { Bookings };
+});
+module.exports = Bookings = mongoose.model("bookings", EventSchema);
