@@ -21,7 +21,7 @@ router.put("/contact/:id", (req, res) => basicInfo.updateProfileContact(req, res
 
 // PROFILE PHOTOS
 router.post("/photos", (req, res) => photos.createProfilePhotos(req, res));
-router.get("/photos/:id", (req, res) => photos.getAllProfilePhotos(req, res));
+router.get("/photos", (req, res) => photos.getAllProfilePhotos(req, res));
 router.delete("/photos", (req, res) => photos.deleteProfilePhotos(req, res));
 
 // PROFILE URLS
