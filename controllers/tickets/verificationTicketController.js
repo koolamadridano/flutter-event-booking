@@ -90,7 +90,7 @@ const updateProfileVerificationStatus = async (req, res) => {
 const deleteVerificationTicket = async (req, res) => {
     try {
         const _id = req.params.id;
-        Verification.findByIdAndDelete(_id)
+        Verification.findOneAndRemove({ accountId })
             .then((value) => {
                 if (value) 
                     return res.status(200).json({ message: "deleted"});
