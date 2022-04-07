@@ -19,10 +19,10 @@ const enumCategory = [
 ];
 
 const BookingsSchema =  new Schema({
-       ref: {
+   ref: {
         type: String,
         required: [true, "ref is required"],
-      },
+    },
     header: {
       eventPlanner: {
         id: {
@@ -98,4 +98,4 @@ const BookingsSchema =  new Schema({
       required: [true, "status is required"],
     },
 });
-module.exports = Bookings = mongoose.model("bookings", EventSchema);
+module.exports = Bookings = mongoose.model("bookings", BookingsSchema);
