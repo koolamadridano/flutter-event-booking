@@ -14,21 +14,9 @@ const VerificationSchema = new Schema({
         type: String,
         required: [true, "lastName required"],
     },
-    address: {
-        type: String,
-        required: [true, "address is required"],
-    },
-    contactNumber: {
-        type: String,
-        required: [true, "contactNumber is required"],
-    },
     url: {
         type: String,
         required: [true, "url is required"],
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
     },
     status: {
         type: String,
@@ -37,7 +25,11 @@ const VerificationSchema = new Schema({
     },
     updatedAt: {
         type: Date,
-    }
+    },
+     createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 module.exports = Verification = mongoose.model("verifications", VerificationSchema);
