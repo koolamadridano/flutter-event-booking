@@ -3,13 +3,15 @@ const express = require("express");
 const multer = require("multer");
 const mongoose = require("mongoose");
 
-const user = require("./_routes/_user");
-const img =  require("./_routes/_img");
-const profile = require("./_routes/_profile");
-const event = require("./_routes/_event");
-const bookingEventPlanner = require("./_routes/_event-planner-bookings");
-const bookingCustomer =  require("./_routes/_customer-bookings");
-const tickets = require("./_routes/_verification");
+const user = require("./routes/user");
+const img =  require("./routes/img");
+const profile = require("./routes/profile");
+const event = require("./routes/event");
+const bookingEventPlanner = require("./routes/event-planner-bookings");
+const bookingCustomer =  require("./routes/customer-bookings");
+const verificationTicket = require("./routes/verification");
+const reportUserTicket = require("./routes/report-user");
+const message = require("./routes/message");
 
 const { fileFilter } = require("./services/img-upload/fileFilter");
 const storage = multer.diskStorage({});
@@ -19,7 +21,7 @@ const app = express();
 
 try {
   mongoose
-    .connect(process.env.CONNECTION_STRING)
+    .connect(process.env.CONNECTION_STRING_LOCAL)
     .then((value) =>console.log(`SERVER IS CONNECTED TO ${value.connections[0]._connectionString}`))
     .catch(() => console.log("SERVER CANNOT CONNECT TO MONGODB"));
 
@@ -33,7 +35,10 @@ try {
   app.use("/api", event);
   app.use("/api", bookingEventPlanner);
   app.use("/api", bookingCustomer);
-  app.use("/api", tickets);
+  app.use("/api", message);
+
+  app.use("/api", verificationTicket);
+  app.use("/api", reportUserTicket);
 
   app.listen(port, () => console.log("SERVER IS RUNNING"));
 } catch (error) {
