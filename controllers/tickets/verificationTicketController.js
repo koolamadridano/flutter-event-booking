@@ -89,7 +89,7 @@ const updateProfileVerificationStatus = async (req, res) => {
 
 const deleteVerificationTicket = async (req, res) => {
     try {
-        const _id = req.params.id;
+        const accountId = req.params.id;
         Verification.findOneAndRemove({ accountId })
             .then((value) => {
                 if (value) 
