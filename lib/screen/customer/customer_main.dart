@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app/const/colors.dart';
 import 'package:app/controllers/eventController.dart';
 import 'package:app/controllers/profileController.dart';
+import 'package:app/controllers/reportController.dart';
 import 'package:app/controllers/userController.dart';
 import 'package:app/controllers/verificationController.dart';
 import 'package:app/helpers/getCategoryBadge.dart';
@@ -28,6 +29,7 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
   final _profileController = Get.put(ProfileController());
   final _verificationController = Get.put(VerificationController());
   final _eventController = Get.put(EventController());
+  final _report = Get.put(ReportController());
 
   late bool _isVerified;
   late String _firstName;
@@ -220,6 +222,16 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                           }
                           _eventController.selectedEvent =
                               snapshot.data![index];
+                          _report.selectedProfile = {
+                            "accountId": snapshot.data![index]["eventPlanner"]
+                                ["id"],
+                            "firstName": snapshot.data![index]["eventPlanner"]
+                                ["firstName"],
+                            "lastName": snapshot.data![index]["eventPlanner"]
+                                ["lastName"],
+                          };
+                          //  snapshot.data![index]["eventPlanner"];
+                          //prettyPrint("DATA_EVENT", snapshot.data![index]);
                           Get.toNamed("/customer-event-preview");
                         },
                         child: Container(
@@ -512,6 +524,24 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
                           ),
                           onTap: () {
                             Get.toNamed("/customer-messages");
+                          },
+                        )
+                      : const SizedBox(),
+                  _isVerified
+                      ? ListTile(
+                          leading: const Icon(
+                            AntDesign.message1,
+                            color: secondary,
+                          ),
+                          title: Text(
+                            'Messages',
+                            style: GoogleFonts.roboto(
+                              color: secondary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          onTap: () {
+                            Get.toNamed("/messages");
                           },
                         )
                       : const SizedBox(),

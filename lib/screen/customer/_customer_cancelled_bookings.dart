@@ -8,7 +8,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 
 class CustomerCancelledBookingsScreen extends StatefulWidget {
   const CustomerCancelledBookingsScreen({Key? key}) : super(key: key);

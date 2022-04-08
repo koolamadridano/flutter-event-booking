@@ -1,5 +1,6 @@
 import 'package:app/const/colors.dart';
 import 'package:app/controllers/organizerController.dart';
+import 'package:app/controllers/reportController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
@@ -14,8 +15,8 @@ class OrganizersListing extends StatefulWidget {
 }
 
 class _OrganizersListingState extends State<OrganizersListing> {
-  final _organizerController = Get.put(OrganizerController());
-
+  final _organizer = Get.put(OrganizerController());
+  final _report = Get.put(ReportController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +48,7 @@ class _OrganizersListingState extends State<OrganizersListing> {
         // ),
       ),
       body: FutureBuilder(
-        future: _organizerController.getOrganizers(),
+        future: _organizer.getOrganizers(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.none) {
             return const LinearProgressIndicator(
@@ -89,7 +90,8 @@ class _OrganizersListingState extends State<OrganizersListing> {
               return ListTile(
                 contentPadding: const EdgeInsets.only(right: 30.0, left: 30.0),
                 onTap: () {
-                  _organizerController.selectedOrganizer = snapshot.data[index];
+                  _report.selectedProfile = snapshot.data[index];
+                  _organizer.selectedOrganizer = snapshot.data[index];
                   Get.toNamed("/organizer-listing-preview");
                 },
                 leading: const Icon(

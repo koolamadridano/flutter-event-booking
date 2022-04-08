@@ -358,6 +358,24 @@ class _EventPlannerMainScreenState extends State<EventPlannerMainScreen>
                           onTap: () => Get.toNamed("/event-planner-history"),
                         )
                       : const SizedBox(),
+                  _isVerified
+                      ? ListTile(
+                          leading: const Icon(
+                            AntDesign.message1,
+                            color: secondary,
+                          ),
+                          title: Text(
+                            'Messages',
+                            style: GoogleFonts.roboto(
+                              color: secondary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          onTap: () {
+                            Get.toNamed("/messages");
+                          },
+                        )
+                      : const SizedBox(),
                   !_verificationController.hasTicket.value
                       ? !_isVerified
                           ? ListTile(

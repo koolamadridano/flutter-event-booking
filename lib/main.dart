@@ -3,6 +3,8 @@ import 'package:app/routes/event_organizer.dart';
 import 'package:app/routes/event_planner.dart';
 import 'package:app/routes/tickets.dart';
 import 'package:app/routes/users.dart';
+import 'package:app/screen/account_disabled.dart';
+import 'package:app/screen/messages.dart';
 import 'package:app/screen/user/user_terms_and_agreement.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,6 +32,14 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/terms-agreement-and-policy",
           page: () => const TermsAndAgreement(),
+        ),
+        GetPage(
+          name: "/messages",
+          page: () => const Messages(),
+        ),
+        GetPage(
+          name: "/account-disabled",
+          page: () => const AccountDisabled(),
         ),
         ...routeUsers,
         ...routeCustomers,

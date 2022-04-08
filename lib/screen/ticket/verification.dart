@@ -1,12 +1,9 @@
 import 'dart:io';
-
 import 'package:app/const/colors.dart';
 import 'package:app/controllers/verificationController.dart';
 import 'package:app/helpers/focusNode.dart';
 import 'package:app/widgets/button.dart';
-import 'package:app/widgets/input.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';

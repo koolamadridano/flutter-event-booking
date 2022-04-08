@@ -82,7 +82,10 @@ class UserController extends GetxController {
       });
       loginData = loginResponse.data;
       prettyPrint("loginResponse", loginData);
-
+      if (loginResponse.data["disabled"] as bool == true) {
+        Get.toNamed("/account-disabled");
+        return;
+      }
       // SEARCH PROFILE IF DOES EXIST
       await validateProfileIfExist(accountId: loginData["accountId"]);
     } on DioError catch (e) {

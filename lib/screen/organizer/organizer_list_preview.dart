@@ -124,8 +124,18 @@ class _OrganizerListingPreviewState extends State<OrganizerListingPreview>
                 tooltip: "Call",
                 splashRadius: 20,
                 icon: const Icon(
-                  AntDesign.phone,
+                  FontAwesome.phone_square,
                   color: secondary,
+                ),
+              ),
+              IconButton(
+                onPressed: () => Get.toNamed("/ticket-report-user"),
+                tooltip: "Report",
+                splashRadius: 20,
+                icon: const Icon(
+                  MaterialIcons.report,
+                  color: secondary,
+                  size: 30,
                 ),
               )
             ],

@@ -2,7 +2,7 @@ import 'package:app/screen/event-planner/event_planner_create_events.dart';
 import 'package:app/screen/event-planner/event_planner_event_preview.dart';
 import 'package:app/screen/event-planner/event_planner_events.dart';
 import 'package:app/screen/event-planner/event_planner_history.dart';
-import 'package:app/screen/event-planner/event_planner_page.dart';
+import 'package:app/screen/event-planner/event_planner_main.dart';
 import 'package:app/screen/event-planner/preview/preview_event_planner_booking.dart';
 import 'package:app/screen/event-planner/redirect/redirect_event_planner_accept_book.dart';
 import 'package:get/get.dart';

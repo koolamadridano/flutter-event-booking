@@ -1,7 +1,7 @@
 import 'package:app/screen/customer/_customer_cancelled_bookings.dart';
 import 'package:app/screen/customer/customer_bookings_page.dart';
 import 'package:app/screen/customer/customer_event_preview.dart';
-import 'package:app/screen/customer/customer_main_screen.dart';
+import 'package:app/screen/customer/customer_main.dart';
 import 'package:app/screen/customer/customer_receipts.dart';
 import 'package:get/get.dart';
 

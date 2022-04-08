@@ -116,6 +116,7 @@ class _CustomerEventPreviewState extends State<CustomerEventPreview> {
             // shape: Border(
             //   bottom: BorderSide(color: secondary.withOpacity(0.2), width: 0.5),
             // ),
+
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -142,7 +143,18 @@ class _CustomerEventPreviewState extends State<CustomerEventPreview> {
                 ),
               ],
             ),
-            actions: [],
+            actions: [
+              IconButton(
+                onPressed: () => Get.toNamed("/ticket-report-user"),
+                tooltip: "Report",
+                splashRadius: 20,
+                icon: const Icon(
+                  MaterialIcons.report,
+                  color: secondary,
+                  size: 30,
+                ),
+              )
+            ],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

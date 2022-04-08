@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:app/const/colors.dart';
-import 'package:app/const/social_icons.dart';
 import 'package:app/controllers/organizerController.dart';
 import 'package:app/controllers/profileController.dart';
 import 'package:app/controllers/userController.dart';
 import 'package:app/controllers/verificationController.dart';
 import 'package:app/helpers/prettyPrint.dart';
-import 'package:app/ux/alert_dialogs/deleted_dialog.dart';
 import 'package:app/ux/alert_dialogs/verification_success_dialog.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +12,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class OrganizerMain extends StatefulWidget {
   const OrganizerMain({Key? key}) : super(key: key);
@@ -483,6 +480,24 @@ class _OrganizerMainState extends State<OrganizerMain>
                           ),
                           onTap: () {
                             Get.toNamed("/organizer-social-links");
+                          },
+                        )
+                      : const SizedBox(),
+                  _isVerified
+                      ? ListTile(
+                          leading: const Icon(
+                            AntDesign.message1,
+                            color: secondary,
+                          ),
+                          title: Text(
+                            'Messages',
+                            style: GoogleFonts.roboto(
+                              color: secondary,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          onTap: () {
+                            Get.toNamed("/messages");
                           },
                         )
                       : const SizedBox(),
