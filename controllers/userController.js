@@ -77,7 +77,7 @@ const updateUserStatus = async (req, res) => {
       )
         .then((value) => {
           if (!value) 
-              return res.status(400).json({ message: "email not found" });
+              return res.status(400).json({ message: "_id not found" });
           return res.status(200).json(value);
         })
         .catch((err) => res.status(400).json(err));
