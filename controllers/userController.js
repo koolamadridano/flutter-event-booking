@@ -69,9 +69,9 @@ const  loginUser = async (req, res) => {
 
 const updateUserStatus = async (req, res) => {
   try {
-      const { email, disabled } = req.body;
+      const { _id, disabled } = req.body;
       User.findOneAndUpdate(
-        { email },
+        { _id },
         { disabled },
         { new: true }
       )
