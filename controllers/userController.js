@@ -75,11 +75,7 @@ const updateUserStatus = async (req, res) => {
         { disabled },
         { new: true }
       )
-        .then((value) => {
-          if (!value) 
-              return res.status(400).json({ message: "_id not found" });
-          return res.status(200).json(value);
-        })
+        .then((value) => res.status(200).json(value))
         .catch((err) => res.status(400).json(err));
   } catch (error) {
     console.error(error);
